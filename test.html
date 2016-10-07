@@ -26,6 +26,7 @@
             for (i = 0; i < bosThanksgivingCrimesJSON.length; i = i + 1) {
                 console.log(bosThanksgivingCrimesJSON[i].incident_type_description)
                 bosThanksgivingCrimes = bosThanksgivingCrimes + bosThanksgivingCrimesJSON[i].incident_type_description + " @ location: " + bosThanksgivingCrimesJSON[i].location.coordinates + "<br>";
+                console.log(bosThanksgivingCrimesJSON[i].location.coordinates[0] + " - " + bosThanksgivingCrimesJSON[i].location.coordinates[1])
             }
 //            document.getElementById("bostonThanksgivingCrime").innerHTML = request.responseText;
             document.getElementById("bostonThanksgivingCrime").innerHTML = bosThanksgivingCrimes;

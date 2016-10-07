@@ -25,5 +25,8 @@ var bosThanksgivingCrime = JSON.parse(request.responseText),
     i;
 for (i = 0; i < bosThanksgivingCrime.length; i = i + 1) {
     bosThanksgivingCrimeIncidentALocation = bosThanksgivingCrimeIncidentALocation + bosThanksgivingCrime[i].incident_type_description + "@ location: " + bosThanksgivingCrime[i].location.coordinates + "<br>";
+    
+    var tempMarker = L.marker([bosThanksgivingCrime[i].location.coordinates[1], bosThanksgivingCrime[i].location.coordinates[0]]).addTo(mymap);
+    tempMarker.bindPopup(bosThanksgivingCrime[i].incident_type_description);
 }
 document.getElementById("rspTxt").innerHTML = bosThanksgivingCrimeIncidentALocation;
