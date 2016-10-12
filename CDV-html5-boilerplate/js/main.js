@@ -9,9 +9,9 @@ var centerOfBostonCoordinates = [42.3601, -71.0589],
 var pjfanMarkerIcon = L.icon({
     iconUrl: '../pjfan_marker_icon.png',
     shadowURL: '../pjfan_marker_icon_shadow.png',
-    iconSize: [60, 80],
-    shadowSize: [40, 40],
-    iconAnchor: [30, 79],
+    iconSize: [80, 107],
+    shadowSize: [53, 53],
+    iconAnchor: [40, 106],
     shadowAnchor: [1, 1]
 });
 
