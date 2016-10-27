@@ -7,8 +7,8 @@ var centerOfBostonCoordinates = [42.3601, -71.0589],
     mapboxAPIToken = prompt("Please enter jbshin's mapbox API token", "API Token");
 
 var pjfanMarkerIcon = L.icon({
-    iconUrl: '../pjfan_marker_icon.png',
-    shadowURL: '../pjfan_marker_icon_shadow.png',
+    iconUrl: 'icons/pjfan_marker_icon.png',
+    shadowURL: 'icons/pjfan_marker_icon_shadow.png',
     iconSize: [80, 107],
     shadowSize: [53, 53],
     iconAnchor: [40, 106],
