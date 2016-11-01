@@ -33,7 +33,7 @@
         <h4 class="subheader">Boston 2012 Thanksgiving Crime Report</h4>
         <p id="rspTxt"></p>
         <?php
-            # write php code here...
+            echo "<h4>--- php code output ---</h4>";
             class MyDB extends SQLite3 {
                 function __construct() {
                     $this->open('CDV_Database.db');
@@ -45,6 +45,7 @@
             } else {
                 echo "Opened database successfully\n";
             }
+            echo "<h4>--- end of php code output ---</h4>";
         ?>
         
         

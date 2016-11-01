@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    </head>
+    <body>
+        <h2>TEST PAGE</h2>
+        <div id="data" style="font-size: 8px; column-count: 3"></div>
+         <script>
+             var cdRequest = new XMLHttpRequest();
+             cdRequest.open("GET", "https://data.cityofboston.gov/resource/ufcx-3fdn.json?year=2012&month=11&day_week=Thursday", false);
+             cdRequest.send();
+             var bosTGCrimesJSON = JSON.parse(cdRequest.responseText),
+                 bosTGCrimesText = "",
+                 i;
+             for (i = 0; i < bosTGCrimesJSON.length; i = i + 1) {
+                bosTGCrimesText = bosTGCrimesText + bosTGCrimesJSON[i].incident_type_description + "@ location: " + bosTGCrimesJSON[i].location.coordinates + "<br>";
+             }
+             document.getElementById("data").innerHTML = bosTGCrimesText;
+         </script>
+        
+        <h4>QUERY RESULTS WILL RENDER HERE</h4>
+        <div id="results" style="font-size: 10px; color: green">right here...</div>
+        
+        <script>
+            $.ajax({
+                type: "POST",
+                url: "backend.php",
+                data: {'id': '120705715'},
+                dataType: 'html',
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        </script>
+        
+        <h2>END OF TEST PAGE</h2>
+        
+        
+        
+    </body>
+</html>
