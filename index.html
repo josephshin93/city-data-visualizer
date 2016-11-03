@@ -28,14 +28,20 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h2>Boston Crime Report Data Visualizer</h2>
+        <h2>Boston Crime Data Visualizer</h2>
         <div id="mapid"></div>
-        <h4 class="subheader">Boston 2012 Thanksgiving Crime Report</h4>
-        <p id="rspTxt"></p>
-        <?php
-            # write php code here...    
-        ?>
-        
+        <h4 class="subheader">Boston Crime Query</h4>
+        <form id="bostonCrimeQuery">
+            Search by...<br>
+            Date: <input type="text" name="date-year" value="2012">&nbsp;<input type="text" name="date-month" value="7">&nbsp;<input type="text" name="day" value="4"><br>
+            Compnos: <input type="text" name="comp"><br>
+            Incident Name: <input type="text" name="inc" value="PubDrink"><br>
+            Location by coordinates: <input type="text" name="coor-lon">&nbsp;<input type="text" name="coor-lat"><br>
+            Time: <input type="text" name="time-hour">&nbsp;<input type="text" name="time-min">&nbsp;<input type="text" name="time-sec"><br>
+        </form>
+        <button onclick="getQueryParameters()">SEARCH</button>
+        <br><br><br>
+        <p id="rspTxt">response goes here</p>
         
 
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
