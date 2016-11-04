@@ -12,50 +12,57 @@
     
 
     //receive POST data and parse it
-    $qDateYear = "";
-    $qDateMonth = "";
+    $qDateYears = array();
+    $qDateMonths = array();
     $qCompnos = "";
     $qIncident = "";
     $qCoordinates = array();
     $qDay = "";
     $qTime = array();
+    $yearsArray = array(
+        "2012" => "Twelve",
+        "2013" => "Thirteen",
+        "2014" => "Fourteen",
+        "2015" => "Fifteen"
+    );
+    $monthsArray = array(
+        "1" => "January",
+        "2" => "February",
+        "3" => "March",
+        "4" => "April",
+        "5" => "May",
+        "6" => "June",
+        "7" => "July",
+        "8" => "August",
+        "9" => "September",
+        "10" => "October",
+        "11" => "November",
+        "12" => "December"
+    );
     function parseCrimeQueryData () {
-        global $qDateYear, $qDateMonth;
-        $yearsArray = array(
-            "2012" => "Twelve",
-            "2013" => "Thirteen",
-            "2014" => "Fourteen",
-            "2015" => "Fifteen"
-        );
-        $monthsArray = array(
-            "1" => "January",
-            "2" => "February",
-            "3" => "March",
-            "4" => "April",
-            "5" => "May",
-            "6" => "June",
-            "7" => "July",
-            "8" => "August",
-            "9" => "September",
-            "10" => "October",
-            "11" => "November",
-            "12" => "December"
-        );
-        function queryAllTablesString ($whereClause) {
-            global $yearsArray, $monthsArray;
+        global $qDateYears, $qDateMonths, $yearsArray, $monthsArray;
+        function queryMultipleTablesString ($whereClause, $selectYear, $selectMonth) {
+            global $yearsArray, $monthsArray, $qDateYears, $qDateMonths;
             $masterQueryString = "";
-            foreach ($yearsArray as $y) {
-                foreach ($monthsArray as $m) {
+            foreach ($yearsArray as $keyy => $y) {
+                foreach ($monthsArray as $keym => $m) {
                     if ($y == "Twelve" && ($m == "January" || $m == "February" || $m == "March" || $m == "April" || $m == "May" || $m == "June")) {
                         continue;
                     } elseif ($y == "Fifteen" && ($m == "September" || $m == "October" || $m == "November" || $m == "December")) {
                         continue;
-                    } elseif ($y == "Fifteen" && $m == "August") {
-                        $masterQueryString .= "SELECT * FROM ".$y.$m.$whereClause;
                     } else {
-                        $masterQueryString .= "SELECT * FROM ".$y.$m.$whereClause." UNION ";
+                        if ($selectYear == "" && $selectMonth == "") {
+                            $masterQueryString .= "SELECT * FROM ".$y.$m.$whereClause." UNION ";
+                        } elseif ($selectMonth == "" && $keyy == $selectYear) {
+                            $masterQueryString .= "SELECT * FROM ".$y.$m.$whereClause." UNION ";
+                        } elseif ($selectYear == "" && $keym == $selectMonth) {
+                            $masterQueryString .= "SELECT * FROM ".$y.$m.$whereClause." UNION ";
+                        }
                     }
                 }
+            }
+            if (substr($masterQueryString, -7, -1) == " UNION") {
+                $masterQueryString = substr($masterQueryString, 0, -8);
             }
             return $masterQueryString;
         }
@@ -101,65 +108,110 @@
             }
             return $whereClause;
         }
-        $table = "";
-        $queryString = "";
-        if (isset($_POST["date"][0]) && isset($_POST["date"][1])) {
-            $qDateYear = $_POST["date"][0];
-            $qDateMonth = $_POST["date"][1];
-            $table .= $yearsArray[$qDateYear].$monthsArray[$qDateMonth];
-            $queryString = "SELECT * FROM ".$table.obtainWhereClause();
+        $tables = array();
+        $query = "";
+        if (isset($_POST["year"]) && isset($_POST["month"])) {
+            array_push($qDateYears, $_POST["year"]);
+            array_push($qDateMonths, $_POST["month"]);
+            array_push($tables, $yearsArray[$qDateYears[0]].$monthsArray[$qDateMonths[0]]);
+            $query = "SELECT * FROM ".$tables[0].obtainWhereClause();
+        } elseif (isset($_POST["year"])) {
+            array_push($qDateYears, $_POST["year"]);
+            foreach ($monthsArray as $key => $m) {
+                array_push($qDateMonths, $key);
+                array_push($tables, $yearsArray[$qDateYears[0]].$m);
+            } 
+            $query = queryMultipleTablesString(obtainWhereClause(), $qDateYears[0], "");
+        } elseif (isset($_POST["month"])) {
+            array_push($qDateMonths, $_POST["month"]);
+            foreach ($yearsArray as $key => $y) {
+                array_push($qDateYears, $key);
+                array_push($tables, $y.$monthsArray[$qDateMonths[0]]);
+            }
+            $query = queryMultipleTablesString(obtainWhereClause(), "", $qDateMonths[0]);
         } else {
-            $queryString = queryAllTablesString(obtainWhereClause());
+            foreach ($yearsArray as $keyy => $y) {
+                array_push($qDateYears, $keyy);
+                foreach ($monthsArray as $m) {
+                    array_push($tables, $y.$m);
+                }
+            }
+            foreach ($monthsArray as $keym => $m) {
+                array_push($qDateMonths, $keym);
+            }
+            $query = queryMultipleTablesString(obtainWhereClause(), "", "");
         }
-        $replacement = "";
-        $queryString = substr($queryString, 0, -1).$replacement;   
-        return array("table" => $table, "string" => $queryString);
+        return array("tables" => $tables, "query" => $query);
     }
     $query = parseCrimeQueryData();
-    echo $query["table"]."<br><br>".$query["string"]."<br><br>";
+//    echo "tables: <br>";
+//    foreach ($query["tables"] as $t) {
+//        echo $t."<br>";
+//    }
+//    echo "<br>";
+//    echo "where clause: ";
+//    echo $query["query"]."<br>";
+//    echo "<br>";
+//    echo "years: <br>";
+//    foreach ($qDateYears as $qy) {
+//        echo $qy."<br>";   
+//    }
+//    echo "months: <br>";
+//    foreach ($qDateMonths as $qm) {
+//        echo $qm."<br>";
+//    }
+//    echo "<br>";
 
-
-    //create table if it doesn't already exist
-    $ret = $db->exec(
-        "CREATE TABLE IF NOT EXISTS ".$query["table"]." (
-            compnos INT,
-            incident TEXT,
-            longitude REAL,
-            latitude REAL,
-            day INT,
-            hour INT,
-            minute INT,
-            second INT
-        )"
-    );
-    if (!$ret) { echo $db->lastErrorMsg(); }
-    //get data from open data api **** need to fix so that it only GETs if the table is empty
-    $dataJson = file_get_contents("https://data.cityofboston.gov/resource/ufcx-3fdn.json?year=".$qDateYear."&month=".$qDateMonth);
-    $dataArray = json_decode($dataJson, true);
-    foreach ($dataArray as $entry) { //enter relevent data into the table
-        $comp = $entry['compnos'];
-        $inc = $entry['incident_type_description'];
-        $lx = $entry['location']['coordinates'][0];
-        $ly = $entry['location']['coordinates'][1];
-        $td = substr($entry['fromdate'], 8, 2);
-        $th = substr($entry['fromdate'], 11, 2);
-        $tm = substr($entry['fromdate'], 14, 2);
-        $ts = substr($entry['fromdate'], 17, 2);
-        //inserting all gathered info into sqlite db
-        $ret = $db->exec("INSERT INTO ".$query["table"]."(compnos, incident, longitude, latitude, day, hour, minute, second) VALUES('$comp', '$inc', '$lx', '$ly', '$td', '$th', '$tm', '$ts')");
-        if (!$ret) { echo $db->lastErrorMsg(); }
+    //loop through all necessary tables for the query
+    foreach ($qDateYears as $years) {
+        foreach ($qDateMonths as $months) {
+            //add the table if it has not yet been created and skip months not in the crime database
+            if (($years == "2012" && ($months == "1" || $months == "2" || $months == "3" || $months == "4" || $months == "5" || $months == "6")) || ($years == "2015" && ($months == "9" || $months == "10" || $months == "11" || $months == "12"))) {
+                continue;
+            }
+            $ret = $db->exec(
+                "CREATE TABLE IF NOT EXISTS ".$yearsArray[$years].$monthsArray[$months]." (
+                    compnos INT PRIMARY KEY,
+                    incident TEXT,
+                    longitude REAL,
+                    latitude REAL,
+                    day INT,
+                    hour INT,
+                    minute INT,
+                    second INT
+                )"
+            );
+            if (!$ret) { echo $db->lastErrorMsg(); }
+            //get data for all months necessary for query ******* may be inefficent look into creating a more efficient metho
+            $dataJson = file_get_contents("https://data.cityofboston.gov/resource/ufcx-3fdn.json?year=".$years."&month=".$months);
+            $dataArray = json_decode($dataJson, true);
+            //enter all relevent data into table
+            foreach ($dataArray as $entry) { 
+                $comp = $entry['compnos'];
+                $inc = $entry['incident_type_description'];
+                $lx = $entry['location']['coordinates'][0];
+                $ly = $entry['location']['coordinates'][1];
+                $td = substr($entry['fromdate'], 8, 2);
+                $th = substr($entry['fromdate'], 11, 2);
+                $tm = substr($entry['fromdate'], 14, 2);
+                $ts = substr($entry['fromdate'], 17, 2);
+                $ret = $db->exec(
+                    "INSERT OR IGNORE INTO ".$yearsArray[$years].$monthsArray[$months]."(compnos, incident, longitude, latitude, day, hour, minute, second) VALUES('$comp', '$inc', '$lx', '$ly', '$td', '$th', '$tm', '$ts')"
+                );
+                if (!$ret) { echo $db->lastErrorMsg(); }
+            }
+        }
     }
-    
+
     
     //query the database
     $dbh = new PDO('sqlite:CDV_Database.db'); //we have to use PDO object to query for some reason - need to research...
-    $queryResults = $dbh->query($query["string"]);
+    $queryResults = $dbh->query($query["query"]);
     $queryArray = array();
     foreach ($queryResults as $row) {
         $queryArray[] = array($row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7]);
-//        echo $row[0]." - ".$row[1]." - ".$row[2]." - ".$row[3]." - ".$row[4]." - ".$row[5]." - ".$row[6]." - ".$row[7]."<br>";
     }
     echo json_encode($queryArray);
-    
+//    
 
 ?>
