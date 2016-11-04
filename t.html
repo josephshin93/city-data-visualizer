@@ -9,11 +9,14 @@
 			$.ajax({
 				type: "POST",
 				url: "http://localhost:8100",
-				data: {"date": ["2012", "7"], "inc": "PubDrink"},
+				data: {
+					"date": ["2012", "7"]
+				},
 				crossDomain: true,
 			    success: function (data) {
 			    	console.log(data);
 			        document.getElementById("display").innerHTML = data;
+			        console.log(JSON.parse(data).length);
 			    },
 			    error: function (xhr, ajaxOptions, thrownError) {
 			        console.log(xhr.status);
