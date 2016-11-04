@@ -67,14 +67,11 @@ pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
     }
 */
 
-function getQueryParameters() {
+function queryDatabase() {
     "use strict";
     var form = document.getElementById("bostonCrimeQuery"),
         i,
         queryData = {};
-//    for (i = 0; i < form.length; i++) {
-//        console.log(form.elements[i].value);
-//    }
     if ($("input[name=year]").val() !== "") {
         queryData.year = $("input[name=year]").val();
     }
@@ -119,6 +116,23 @@ function getQueryParameters() {
             console.log(data);
             document.getElementById("rspTxt").innerHTML = data;
             console.log("all data received");
+            //now do work with the data
+            var j = JSON.parse(data),
+                i,
+                comp = 0,
+                inc = 1,
+                lon = 2,
+                lat = 3,
+                day = 4,
+                hour = 5,
+                min = 6,
+                sec = 7;
+            for (i = 0; i < j.length; i++) {
+//                console.log(j[i][lat] + ", " + j[i][lon]);
+                //do stuff with each entry of the query that was made
+                var m = L.marker([j[i][lat], j[i][lon]]).addTo(mymap);
+                m.bindPopup("At time " + j[i][hour] + ":" + j[i][min] + ":" + j[i][sec]);
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
