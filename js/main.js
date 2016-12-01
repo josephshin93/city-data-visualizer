@@ -5,13 +5,11 @@
 var centerOfBostonCoordinates = [42.3601, -71.0589],
     pjfanLocationCoordinates = [42.3629, -71.0890],
     mymap = L.map('mapid').setView(centerOfBostonCoordinates, 11),
+    markers,
     pjfanMarkerIcon = L.icon({
         iconUrl: 'icons/pjfan_marker_icon.png',
-        shadowURL: 'icons/pjfan_marker_icon_shadow.png',
         iconSize: [80, 107],
-        shadowSize: [53, 53],
-        iconAnchor: [40, 106],
-        shadowAnchor: [1, 1]
+        iconAnchor: [40, 106]
     });
 
 function getMapboxApiKey() {
@@ -27,6 +25,7 @@ function getMapboxApiKey() {
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 accessToken: data
             }).addTo(mymap);
+            markers = new L.FeatureGroup();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
@@ -36,8 +35,8 @@ function getMapboxApiKey() {
 }
 getMapboxApiKey();
 
-var pjfanLocationMarker = L.marker(pjfanLocationCoordinates, {icon: pjfanMarkerIcon}).addTo(mymap);
-pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
+//var pjfanLocationMarker = L.marker(pjfanLocationCoordinates, {icon: pjfanMarkerIcon}).addTo(mymap);
+//pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
 
 //var request = new XMLHttpRequest();
 //request.open("GET", "https://data.cityofboston.gov/resource/ufcx-3fdn.json?year=2012&month=11&day_week=Thursday", false);
@@ -56,13 +55,15 @@ pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
 
 
 /*
+    Structure of the post data that the QueryCrimeDatabase.php server will be receiving
+    
     $_POST = {
+        "comp": "id number aka compnos",
+        "inc": "incident type description",
+        "coor": ["longitude", "latitude"],
         "year": "year",
         "month": "month",
-        "comp": "compnos",
-        "inc": "incident type description",
-        "coor": ["longitude", "latitude"]
-        "day": "day of month",
+        "day": "day of the month",
         "time": ["hour", "minute", "second"]
     }
 */
@@ -70,40 +71,38 @@ pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
 function queryDatabase() {
     "use strict";
     var form = document.getElementById("bostonCrimeQuery"),
-        i,
         queryData = {};
-    if ($("input[name=year]").val() !== "") {
-        queryData.year = $("input[name=year]").val();
-    }
-    if ($("input[name=month]").val() !== "") {
-        queryData.month = $("input[name=month]").val();
-    }
-    if ($("input[name=comp]").val() !== "") {
-        queryData.comp = $("input[name=comp]").val();
-    }
-    if ($("input[name=inc]").val() !== "") {
-        queryData.inc = $("input[name=inc]").val();
-    }
-    if ($("input[name=coor-lon]").val() !== "" || $("input[name=coor-lat]").val() !== "") { queryData.coor = []; }
-    if ($("input[name=coor-lon]").val() !== "") {
-        queryData.coor.push($("input[name=coor-lon]").val());
-    }
-    if ($("input[name=coor-lat]").val() !== "") {
-        queryData.coor.push($("input[name=coor-lat]").val());
-    }
-    if ($("input[name=day]").val() !== "") {
-        queryData.day = $("input[name=day]").val();
-    }
-    if ($("input[name=time-hour]").val() !== "" || $("input[name=time-min]").val() !== "" || $("input[name=time-sec]").val() !== "") { queryData.time = []; }
-    if ($("input[name=time-hour]").val() !== "") {
-        queryData.time.push($("input[name=time-hour]").val());
-    }
-    if ($("input[name=time-min]").val() !== "") {
-        queryData.time.push($("input[name=time-min]").val());
-    }
-    if ($("input[name=time-sec]").val() !== "") {
-        queryData.time.push($("input[name=time-sec]").val());
-    }
+    
+    if ($("input[name=comp]").val() !== "") { queryData.comp = $("input[name=comp]").val(); }
+    
+    if ($("#dateyear").val() !== "") { queryData.year = $("#dateyear").val(); }
+    if ($("#datemonth").val() !== "") { queryData.month = $("#datemonth").val(); }
+    if ($("#dateday").val() !== "") { queryData.day = $("#dateday").val(); }
+    
+    if ($("input[name=inc]").val() !== "") { queryData.inc = $("input[name=inc]").val(); }
+    
+//    if ($("input[name=coor-lon]").val() !== "" || $("input[name=coor-lat]").val() !== "") {
+//        queryData.coor = [];
+//    }
+//    if ($("input[name=coor-lon]").val() !== "") {
+//        queryData.coor.push($("input[name=coor-lon]").val());
+//    }
+//    if ($("input[name=coor-lat]").val() !== "") {
+//        queryData.coor.push($("input[name=coor-lat]").val());
+//    }
+//    
+//    if ($("input[name=time-hour]").val() !== "" || $("input[name=time-min]").val() !== "" || $("input[name=time-sec]").val() !== "") {
+//        queryData.time = [];
+//    }
+//    if ($("input[name=time-hour]").val() !== "") {
+//        queryData.time.push($("input[name=time-hour]").val());
+//    }
+//    if ($("input[name=time-min]").val() !== "") {
+//        queryData.time.push($("input[name=time-min]").val());
+//    }
+//    if ($("input[name=time-sec]").val() !== "") {
+//        queryData.time.push($("input[name=time-sec]").val());
+//    }
     
     console.log(queryData);
     
@@ -113,32 +112,46 @@ function queryDatabase() {
         data: queryData,
         crossDomain: true,
         success: function (data) {
-            console.log(data);
-            document.getElementById("rspTxt").innerHTML = data;
-            console.log("all data received");
-            //now do work with the data
+            mymap.eachLayer(function (layer) {
+                if (layer._popupHandlersAdded) { //all markers must have popups added in order points to be cleared before new ones are added
+                    mymap.removeLayer(layer);
+                }
+            });
             var j = JSON.parse(data),
                 i,
                 comp = 0,
                 inc = 1,
                 lon = 2,
                 lat = 3,
-                day = 4,
-                hour = 5,
-                min = 6,
-                sec = 7;
+                year = 4,
+                month = 5,
+                day = 6,
+                hour = 7,
+                min = 8,
+                sec = 9;
+            console.log(j.length + " entries received");
             for (i = 0; i < j.length; i++) {
-//                console.log(j[i][lat] + ", " + j[i][lon]);
-                //do stuff with each entry of the query that was made
-                var m = L.marker([j[i][lat], j[i][lon]]).addTo(mymap);
-                m.bindPopup("At time " + j[i][hour] + ":" + j[i][min] + ":" + j[i][sec]);
+                //perform necessary actions with each entry of the query that was made
+                var m = L.marker([j[i][lat], j[i][lon]]),
+                    t;
+                if (j[i][hour] < 12) {
+                    t = j[i][hour] + ":" + j[i][min] + ":" + j[i][sec] + "AM";
+                } else {
+                    t = (j[i][hour] - 12) + ":" + j[i][min] + ":" + j[i][sec] + "PM";
+                }
+                m.bindPopup(j[i][inc] + " occured at " + t);
+                markers.addLayer(m);
             }
+            mymap.addLayer(markers);
+            console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
             console.log(thrownError);
         }
     });
+    
+    
 }
 
 
