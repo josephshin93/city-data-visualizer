@@ -95,19 +95,35 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+#mapbg {
+    height: 450px;
+    width: 100%;
+    background-color: black;
+}
 #mapid {
-    height: 600px;
+    height: 450px;
+    width: 90%;
+    left: 5%;
 }
 #rspTxt {
     font-size: 12px;
     margin-left: 25px;
 }
-.subheader{
+/*
+.subheader {
     margin-top: 70px;
 }
-
-
-
+*/
+#bostonCrimeQuery {
+    display: inline-block;
+    margin-left: 30px;
+    font-size: 12px;
+}
+#queryButton {
+    margin-left: 40px;
+    display: inline-block;
+    font-size: 12px;
+}
 
 
 
