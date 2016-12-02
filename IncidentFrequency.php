@@ -68,7 +68,13 @@
         );
         if (!$ret) { echo $db->lastErrorMsg(); }
     }
+
+    $incfreqjson = json_encode($incidentFrequency);
+
+    $fp = fopen('incident_freq.json', 'w');
+    fwrite($fp, $incfreqjson);
+    fclose($fp);
     
-    echo json_encode($incidentFrequency);
+    echo $incfreqjson;
 
 ?>
