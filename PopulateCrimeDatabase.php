@@ -4,8 +4,7 @@
     //open up database
     class MyDB extends SQLite3 {
         function __construct() {
-            $this->open('Test.db');
-//            $this->open('Boston_Crime_Database.db');
+            $this->open('Boston_Crime_Database.db');
         }
     }
     $db = new MyDB();
@@ -172,28 +171,28 @@
                 continue; //no data for months before 2012 July
             }elseif($keyy == "2015" && $keym == "6"){
                 //handle data for 2015 June - new and old fields are both used here
-//                echo "Overlap > ".$y.$m."\n";
-//                createTable($db, $y, $m);
-//                $datajson = file_get_contents("june_overlap.json");
-//                $data = json_decode($datajson, true);
-//                $c = $nl = 0;
-//                foreach($data as $entry){
-//                    if(isset($entry['old'])){
-//                        if($entry['old']['location']['coordinates'][1] > 0.0){ //filter out entries with no location
-//                            $entryData = extractDataOld($entry['old'], ((int)$keyy), ((int)$keym));
-//                            insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
-//                            $c++;
-//                        }else{ $nl++; }
-//                    }else{
-//                        if(isset($entry['lat'])){ //filter out entries with no location
-//                            $entryData = extractDataNew($entry, ((int)$keyy), ((int)$keym));
-//                            insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
-//                            $c++;
-//                        }else{ $nl++; }
-//                    }
-//                }
-//                echo " >>> ".$nl." entries for ".$keyy." ".$m." did not have a valid location\n";
-//                echo " >>> ".$c." entries for ".$keyy." ".$m." has been submitted for insertion to its table\n\n";
+                echo "Overlap > ".$y.$m."\n";
+                createTable($db, $y, $m);
+                $datajson = file_get_contents("june_overlap.json");
+                $data = json_decode($datajson, true);
+                $c = $nl = 0;
+                foreach($data as $entry){
+                    if(isset($entry['old'])){
+                        if($entry['old']['location']['coordinates'][1] > 0.0){ //filter out entries with no location
+                            $entryData = extractDataOld($entry['old'], ((int)$keyy), ((int)$keym));
+                            insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
+                            $c++;
+                        }else{ $nl++; }
+                    }else{
+                        if(isset($entry['lat'])){ //filter out entries with no location
+                            $entryData = extractDataNew($entry, ((int)$keyy), ((int)$keym));
+                            insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
+                            $c++;
+                        }else{ $nl++; }
+                    }
+                }
+                echo " >>> ".$nl." entries for ".$keyy." ".$m." did not have a valid location\n";
+                echo " >>> ".$c." entries for ".$keyy." ".$m." has been submitted for insertion to its table\n\n";
             }elseif(($keyy == "2015" && ($keym == "7" || $keym == "8" || $keym == "9" || $keym == "10" || $keym == "11" || $keym == "12")) || ($keyy == "2016")){
                 //handle data from new system (2015 July - 2016 December)
                 echo "New System > ".$y.$m."\n";
@@ -212,25 +211,25 @@
                 echo " >>> ".$c." entries for ".$keyy." ".$m." has been submitted for insertion to its table\n\n";
             }else{
                 //handle data from legacy(old) system (2012 July - 2015 May)
-//                echo "Old System > ".$y.$m."\n";
-//                createTable($db, $y, $m);
-//                $datajson = file_get_contents('https://data.cityofboston.gov/resource/ufcx-3fdn.json?year='.$keyy.'&month='.$keym.'&$limit=9000');
-//                $data = json_decode($datajson, true);
-//                echo " >>> data for ".$keyy." ".$m." received\n";
-//                $c = $nl = 0;
-//                foreach($data as $entry){
-//                    if($entry['location']['coordinates'][1] > 0.0){ //filter out entries with no location
-//                        $entryData = extractDataOld($entry, ((int)$keyy), ((int)$keym));
-//                        insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
-//                        $c++;
-//                    }else{ $nl++; }
-//                }
-//                echo " >>> ".$nl." entries for ".$keyy." ".$m." did not have a valid location\n";
-//                echo " >>> ".$c." entries for ".$keyy." ".$m." has been submitted for insertion to its table\n\n";
+                echo "Old System > ".$y.$m."\n";
+                createTable($db, $y, $m);
+                $datajson = file_get_contents('https://data.cityofboston.gov/resource/ufcx-3fdn.json?year='.$keyy.'&month='.$keym.'&$limit=9000');
+                $data = json_decode($datajson, true);
+                echo " >>> data for ".$keyy." ".$m." received\n";
+                $c = $nl = 0;
+                foreach($data as $entry){
+                    if($entry['location']['coordinates'][1] > 0.0){ //filter out entries with no location
+                        $entryData = extractDataOld($entry, ((int)$keyy), ((int)$keym));
+                        insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
+                        $c++;
+                    }else{ $nl++; }
+                }
+                echo " >>> ".$nl." entries for ".$keyy." ".$m." did not have a valid location\n";
+                echo " >>> ".$c." entries for ".$keyy." ".$m." has been submitted for insertion to its table\n\n";
             }
         }
     }
-    $timeElapsed = microtime(true) - $startTime;
-    $timeElapsed = $timeElapsed/1000; //get the seconds of the script runtime
-    echo "This script took ".$timeElapsed."seconds to run\n"; 
+    $timeElapsed = microtime(true) - $startTime; //get the seconds of the script runtime
+    $timeElapsed = $timeElapsed / 60; //get the minutes of the script runtime
+    echo "This script took ".$timeElapsed."min to run\n"; 
 ?>
