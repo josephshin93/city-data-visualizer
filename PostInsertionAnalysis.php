@@ -127,6 +127,57 @@
         fwrite($fp, $streetFrequenciesjson);
         fclose($fp);
     }
+    function addTables($db){
+        //create tables for frequencies/totals and add values
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS MonthTotals (month TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($monthlyTotals as $k_month => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO MonthTotals (month, total) VALUES('$k_month', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS Duplicates (id INT PRIMARY KEY)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($duplicates as $ids){
+            $ret = $db->exec("INSERT OR IGNORE INTO Duplicates (id) VALUES('$ids')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS IncidentFrequency (name TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($incidentFrequencies as $k_incident => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO IncidentFrequency (name, total) VALUES('$k_incident', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS DistrictFrequency (district TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($districtFrequencies as $k_district => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO DistrictFrequency (district, total) VALUES('$k_district', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS ShootingFrequency (shooting TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($shootingFrequencies as $k_shot => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO ShootingFrequency (shooting, total) VALUES('$k_shot', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS DayWeekFrequency (day TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($dayWeekFrequencies as $k_day => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO DayWeekFrequency (day, total) VALUES('$k_day', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS UCRFrequency (ucr TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($ucrFrequencies as $k_ucr => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO UCRFrequency (ucr, total) VALUES('$k_ucr', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+        $ret = $db->exec("CREATE TABLE IF NOT EXISTS StreetFrequency (street TEXT PRIMARY KEY, total INT)");
+        if(!$ret){ echo $db->lastErrorMsg(); }
+        foreach($streetFrequencies as $k_street => $v_total){
+            $ret = $db->exec("INSERT OR IGNORE INTO StreetFrequency (street, total) VALUES('$k_street', '$v_total')");
+            if(!$ret){ echo $db->lastErrorMsg(); }
+        }
+    }
     function printResults(){
         //print all results of frequencies/totals
         global $monthlyTotals, $duplicates, $incidentFrequencies, $districtFrequencies, $shootingFrequencies, $dayWeekFrequencies, $ucrFrequencies, $streetFrequencies;
@@ -165,6 +216,7 @@
     }
 
     createJsons();
+    addTables($db);
     printResults();
     
     $timeElapsed = microtime(true) - $start;
