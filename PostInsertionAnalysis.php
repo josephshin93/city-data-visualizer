@@ -4,7 +4,8 @@
     //open up database
     class MyDB extends SQLite3 {
         function __construct() {
-            $this->open('Test.db'); //need to change to Boston_Crime_Database.db once backend is complete
+//            $this->open('Boston_Crime_Database.db');
+            $this->open('Test.db');
         }
     }
     $db = new MyDB();
@@ -49,7 +50,7 @@
             }else{
                 //handle data from entire database
                 $ret = $db->query("SELECT * FROM ".$y.$m);
-                if(!$ret){ continue; }
+                if(!$ret){ continue; } //skip if month doesn't exist
                 while($retArray = $ret->fetchArray(SQLITE3_ASSOC)){
                     $monthTotal++;
                     if(strpos($retArray['id'], ".") !== false){
@@ -220,6 +221,6 @@
     printResults();
     
     $timeElapsed = microtime(true) - $start;
-    $timeElapsed = $timeElapsed/1000; //get the seconds of the script runtime
-    echo "This script took ".$timeElasped."seconds to run\n"; 
+//    $timeElapsed = $timeElapsed/1000; //get the seconds of the script runtime
+    echo "This script took ".$timeElasped."ms to run\n"; 
 ?>
