@@ -1,0 +1,435 @@
+BCDNotes.txt
+
+OUTPUT FOR PopulateCrimeDatabase.php SCRIPT:
+	Old System > TwelveJuly
+	 >>> data for 2012 July received
+	 >>> 178 entries for 2012 July did not have a valid location
+	 >>> 5961 entries for 2012 July has been submitted for insertion to its table
+
+	Old System > TwelveAugust
+	 >>> data for 2012 August received
+	 >>> 227 entries for 2012 August did not have a valid location
+	 >>> 7730 entries for 2012 August has been submitted for insertion to its table
+
+	Old System > TwelveSeptember
+	 >>> data for 2012 September received
+	 >>> 214 entries for 2012 September did not have a valid location
+	 >>> 7604 entries for 2012 September has been submitted for insertion to its table
+
+	Old System > TwelveOctober
+	 >>> data for 2012 October received
+	 >>> 175 entries for 2012 October did not have a valid location
+	 >>> 7434 entries for 2012 October has been submitted for insertion to its table
+
+	Old System > TwelveNovember
+	 >>> data for 2012 November received
+	 >>> 141 entries for 2012 November did not have a valid location
+	 >>> 6631 entries for 2012 November has been submitted for insertion to its table
+
+	Old System > TwelveDecember
+	 >>> data for 2012 December received
+	 >>> 158 entries for 2012 December did not have a valid location
+	 >>> 6733 entries for 2012 December has been submitted for insertion to its table
+
+	Old System > ThirteenJanuary
+	 >>> data for 2013 January received
+	 >>> 127 entries for 2013 January did not have a valid location
+	 >>> 6875 entries for 2013 January has been submitted for insertion to its table
+
+	Old System > ThirteenFebruary
+	 >>> data for 2013 February received
+	 >>> 158 entries for 2013 February did not have a valid location
+	 >>> 5793 entries for 2013 February has been submitted for insertion to its table
+
+	Old System > ThirteenMarch
+	 >>> data for 2013 March received
+	 >>> 182 entries for 2013 March did not have a valid location
+	 >>> 6906 entries for 2013 March has been submitted for insertion to its table
+
+	Old System > ThirteenApril
+	 >>> data for 2013 April received
+	 >>> 177 entries for 2013 April did not have a valid location
+	 >>> 6811 entries for 2013 April has been submitted for insertion to its table
+
+	Old System > ThirteenMay
+	 >>> data for 2013 May received
+	 >>> 209 entries for 2013 May did not have a valid location
+	 >>> 7501 entries for 2013 May has been submitted for insertion to its table
+
+	Old System > ThirteenJune
+	 >>> data for 2013 June received
+	 >>> 180 entries for 2013 June did not have a valid location
+	 >>> 7474 entries for 2013 June has been submitted for insertion to its table
+
+	Old System > ThirteenJuly
+	 >>> data for 2013 July received
+	 >>> 234 entries for 2013 July did not have a valid location
+	 >>> 7933 entries for 2013 July has been submitted for insertion to its table
+
+	Old System > ThirteenAugust
+	 >>> data for 2013 August received
+	 >>> 200 entries for 2013 August did not have a valid location
+	 >>> 7762 entries for 2013 August has been submitted for insertion to its table
+
+	Old System > ThirteenSeptember
+	 >>> data for 2013 September received
+	 >>> 204 entries for 2013 September did not have a valid location
+	 >>> 7491 entries for 2013 September has been submitted for insertion to its table
+
+	Old System > ThirteenOctober
+	 >>> data for 2013 October received
+	 >>> 180 entries for 2013 October did not have a valid location
+	 >>> 7184 entries for 2013 October has been submitted for insertion to its table
+
+	Old System > ThirteenNovember
+	 >>> data for 2013 November received
+	 >>> 140 entries for 2013 November did not have a valid location
+	 >>> 6710 entries for 2013 November has been submitted for insertion to its table
+
+	Old System > ThirteenDecember
+	 >>> data for 2013 December received
+	 >>> 155 entries for 2013 December did not have a valid location
+	 >>> 6466 entries for 2013 December has been submitted for insertion to its table
+
+	Old System > FourteenJanuary
+	 >>> data for 2014 January received
+	 >>> 172 entries for 2014 January did not have a valid location
+	 >>> 6940 entries for 2014 January has been submitted for insertion to its table
+
+	Old System > FourteenFebruary
+	 >>> data for 2014 February received
+	 >>> 146 entries for 2014 February did not have a valid location
+	 >>> 5972 entries for 2014 February has been submitted for insertion to its table
+
+	Old System > FourteenMarch
+	 >>> data for 2014 March received
+	 >>> 162 entries for 2014 March did not have a valid location
+	 >>> 7013 entries for 2014 March has been submitted for insertion to its table
+
+	Old System > FourteenApril
+	 >>> data for 2014 April received
+	 >>> 212 entries for 2014 April did not have a valid location
+	 >>> 6924 entries for 2014 April has been submitted for insertion to its table
+
+	Old System > FourteenMay
+	 >>> data for 2014 May received
+	 >>> 231 entries for 2014 May did not have a valid location
+	 >>> 7991 entries for 2014 May has been submitted for insertion to its table
+
+	Old System > FourteenJune
+	 >>> data for 2014 June received
+	 >>> 207 entries for 2014 June did not have a valid location
+	 >>> 7587 entries for 2014 June has been submitted for insertion to its table
+
+	Old System > FourteenJuly
+	 >>> data for 2014 July received
+	 >>> 217 entries for 2014 July did not have a valid location
+	 >>> 7549 entries for 2014 July has been submitted for insertion to its table
+
+	Old System > FourteenAugust
+	 >>> data for 2014 August received
+	 >>> 217 entries for 2014 August did not have a valid location
+	 >>> 7529 entries for 2014 August has been submitted for insertion to its table
+
+	Old System > FourteenSeptember
+	 >>> data for 2014 September received
+	 >>> 171 entries for 2014 September did not have a valid location
+	 >>> 7475 entries for 2014 September has been submitted for insertion to its table
+
+	Old System > FourteenOctober
+	 >>> data for 2014 October received
+	 >>> 217 entries for 2014 October did not have a valid location
+	 >>> 7646 entries for 2014 October has been submitted for insertion to its table
+
+	Old System > FourteenNovember
+	 >>> data for 2014 November received
+	 >>> 124 entries for 2014 November did not have a valid location
+	 >>> 6633 entries for 2014 November has been submitted for insertion to its table
+
+	Old System > FourteenDecember
+	 >>> data for 2014 December received
+	 >>> 287 entries for 2014 December did not have a valid location
+	 >>> 6436 entries for 2014 December has been submitted for insertion to its table
+
+	Old System > FifteenJanuary
+	 >>> data for 2015 January received
+	 >>> 1085 entries for 2015 January did not have a valid location
+	 >>> 5498 entries for 2015 January has been submitted for insertion to its table
+
+	Old System > FifteenFebruary
+	 >>> data for 2015 February received
+	 >>> 1076 entries for 2015 February did not have a valid location
+	 >>> 5316 entries for 2015 February has been submitted for insertion to its table
+
+	Old System > FifteenMarch
+	 >>> data for 2015 March received
+	 >>> 1378 entries for 2015 March did not have a valid location
+	 >>> 5654 entries for 2015 March has been submitted for insertion to its table
+
+	Old System > FifteenApril
+	 >>> data for 2015 April received
+	 >>> 1211 entries for 2015 April did not have a valid location
+	 >>> 5595 entries for 2015 April has been submitted for insertion to its table
+
+	Old System > FifteenMay
+	 >>> data for 2015 May received
+	 >>> 1314 entries for 2015 May did not have a valid location
+	 >>> 6048 entries for 2015 May has been submitted for insertion to its table
+
+	Overlap > FifteenJune
+	 >>> 673 entries for 2015 June did not have a valid location
+	 >>> 6668 entries for 2015 June has been submitted for insertion to its table
+
+	New System > FifteenJuly
+	 >>> 296 entries for 2015 July did not have a valid location
+	 >>> 8046 entries for 2015 July has been submitted for insertion to its table
+
+	New System > FifteenAugust
+	 >>> 314 entries for 2015 August did not have a valid location
+	 >>> 8034 entries for 2015 August has been submitted for insertion to its table
+
+	New System > FifteenSeptember
+	 >>> 362 entries for 2015 September did not have a valid location
+	 >>> 8061 entries for 2015 September has been submitted for insertion to its table
+
+	New System > FifteenOctober
+	 >>> 354 entries for 2015 October did not have a valid location
+	 >>> 7963 entries for 2015 October has been submitted for insertion to its table
+
+	New System > FifteenNovember
+	 >>> 342 entries for 2015 November did not have a valid location
+	 >>> 7473 entries for 2015 November has been submitted for insertion to its table
+
+	New System > FifteenDecember
+	 >>> 378 entries for 2015 December did not have a valid location
+	 >>> 7618 entries for 2015 December has been submitted for insertion to its table
+
+	New System > SixteenJanuary
+	 >>> 299 entries for 2016 January did not have a valid location
+	 >>> 7509 entries for 2016 January has been submitted for insertion to its table
+
+	New System > SixteenFebruary
+	 >>> 498 entries for 2016 February did not have a valid location
+	 >>> 6770 entries for 2016 February has been submitted for insertion to its table
+
+	New System > SixteenMarch
+	 >>> 581 entries for 2016 March did not have a valid location
+	 >>> 7595 entries for 2016 March has been submitted for insertion to its table
+
+	New System > SixteenApril
+	 >>> 528 entries for 2016 April did not have a valid location
+	 >>> 7563 entries for 2016 April has been submitted for insertion to its table
+
+	New System > SixteenMay
+	 >>> 582 entries for 2016 May did not have a valid location
+	 >>> 7966 entries for 2016 May has been submitted for insertion to its table
+
+	New System > SixteenJune
+	 >>> 471 entries for 2016 June did not have a valid location
+	 >>> 8043 entries for 2016 June has been submitted for insertion to its table
+
+	New System > SixteenJuly
+	 >>> 362 entries for 2016 July did not have a valid location
+	 >>> 8221 entries for 2016 July has been submitted for insertion to its table
+
+	New System > SixteenAugust
+	 >>> 606 entries for 2016 August did not have a valid location
+	 >>> 8237 entries for 2016 August has been submitted for insertion to its table
+
+	New System > SixteenSeptember
+	 >>> 561 entries for 2016 September did not have a valid location
+	 >>> 7848 entries for 2016 September has been submitted for insertion to its table
+
+	New System > SixteenOctober
+	 >>> 586 entries for 2016 October did not have a valid location
+	 >>> 7779 entries for 2016 October has been submitted for insertion to its table
+
+	New System > SixteenNovember
+	 >>> 519 entries for 2016 November did not have a valid location
+	 >>> 7096 entries for 2016 November has been submitted for insertion to its table
+
+	New System > SixteenDecember
+	 >>> 113 entries for 2016 December did not have a valid location
+	 >>> 2545 entries for 2016 December has been submitted for insertion to its table
+
+	================ This script took 24.506435596943min to run ================
+
+OUTPUT FOR PostInsertionAnalysis.php SCRIPT:
+	Monthly Totals:
+	 >>> TwelveJuly had 5961 incidents
+	 >>> TwelveAugust had 7730 incidents
+	 >>> TwelveSeptember had 7604 incidents
+	 >>> TwelveOctober had 7434 incidents
+	 >>> TwelveNovember had 6631 incidents
+	 >>> TwelveDecember had 6733 incidents
+	 >>> ThirteenJanuary had 6875 incidents
+	 >>> ThirteenFebruary had 5793 incidents
+	 >>> ThirteenMarch had 6906 incidents
+	 >>> ThirteenApril had 6811 incidents
+	 >>> ThirteenMay had 7501 incidents
+	 >>> ThirteenJune had 7474 incidents
+	 >>> ThirteenJuly had 7933 incidents
+	 >>> ThirteenAugust had 7762 incidents
+	 >>> ThirteenSeptember had 7491 incidents
+	 >>> ThirteenOctober had 7184 incidents
+	 >>> ThirteenNovember had 6710 incidents
+	 >>> ThirteenDecember had 6466 incidents
+	 >>> FourteenJanuary had 6940 incidents
+	 >>> FourteenFebruary had 5972 incidents
+	 >>> FourteenMarch had 7013 incidents
+	 >>> FourteenApril had 6924 incidents
+	 >>> FourteenMay had 7991 incidents
+	 >>> FourteenJune had 7587 incidents
+	 >>> FourteenJuly had 7549 incidents
+	 >>> FourteenAugust had 7529 incidents
+	 >>> FourteenSeptember had 7475 incidents
+	 >>> FourteenOctober had 7646 incidents
+	 >>> FourteenNovember had 6633 incidents
+	 >>> FourteenDecember had 6436 incidents
+	 >>> FifteenJanuary had 5498 incidents
+	 >>> FifteenFebruary had 5316 incidents
+	 >>> FifteenMarch had 5654 incidents
+	 >>> FifteenApril had 5595 incidents
+	 >>> FifteenMay had 6048 incidents
+	 >>> FifteenJune had 6665 incidents
+	 >>> FifteenJuly had 8044 incidents
+	 >>> FifteenAugust had 8031 incidents
+	 >>> FifteenSeptember had 8058 incidents
+	 >>> FifteenOctober had 7960 incidents
+	 >>> FifteenNovember had 7473 incidents
+	 >>> FifteenDecember had 7613 incidents
+	 >>> SixteenJanuary had 7507 incidents
+	 >>> SixteenFebruary had 6770 incidents
+	 >>> SixteenMarch had 7594 incidents
+	 >>> SixteenApril had 7562 incidents
+	 >>> SixteenMay had 7966 incidents
+	 >>> SixteenJune had 8043 incidents
+	 >>> SixteenJuly had 8219 incidents
+	 >>> SixteenAugust had 8237 incidents
+	 >>> SixteenSeptember had 7847 incidents
+	 >>> SixteenOctober had 7779 incidents
+	 >>> SixteenNovember had 7096 incidents
+	 >>> SixteenDecember had 2545 incidents
+	Duplicates:
+	 >>> total count: 15355
+	Incident Frequencies:
+	 >>> Violations occurred 28280 times
+	 >>> Vandalism occurred 20074 times
+	 >>> Other occurred 14697 times
+	 >>> Medical Assistance occurred 26597 times
+	 >>> Drug Violation occurred 19143 times
+	 >>> Property Lost occurred 11702 times
+	 >>> Aggravated Assault occurred 8884 times
+	 >>> Towed occurred 11122 times
+	 >>> Fraud occurred 10801 times
+	 >>> Larceny From Motor Vehicle occurred 17490 times
+	 >>> Missing Person Located occurred 6907 times
+	 >>> Larceny occurred 35795 times
+	 >>> Service occurred 5176 times
+	 >>> Robbery occurred 6968 times
+	 >>> Search Warrants occurred 1119 times
+	 >>> Fire Related Reports occurred 2641 times
+	 >>> Investigate Person occurred 19974 times
+	 >>> Operating Under the Influence occurred 935 times
+	 >>> Investigate Property occurred 10444 times
+	 >>> Liquor Violation occurred 3277 times
+	 >>> Motor Vehicle Accident Response occurred 27490 times
+	 >>> Property Related Damage occurred 1084 times
+	 >>> AUTO THEFT occurred 4469 times
+	 >>> Property Found occurred 5557 times
+	 >>> Warrant Arrests occurred 4803 times
+	 >>> Residential Burglary occurred 9732 times
+	 >>> Disorderly Conduct occurred 2927 times
+	 >>> Offenses Against Child/Family occurred 818 times
+	 >>> Simple Assault occurred 23877 times
+	 >>> Verbal Disputes occurred 8023 times
+	 >>> Landlord/Tenant Disputes occurred 1421 times
+	 >>> Recovered Stolen Property occurred 1381 times
+	 >>> Other Burglary occurred 288 times
+	 >>> Ballistics occurred 1210 times
+	 >>> Phone Call Complaints occurred 1482 times
+	 >>> Burglary - No Property Taken occurred 1339 times
+	 >>> Evading Fare occurred 634 times
+	 >>> Counterfeiting occurred 1926 times
+	 >>> Assembly or Gathering Violations occurred 1534 times
+	 >>> Restraining Order Violations occurred 1418 times
+	 >>> Commercial Burglary occurred 2116 times
+	 >>> Harassment occurred 1945 times
+	 >>> Homicide occurred 202 times
+	 >>> Missing Person Reported occurred 2965 times
+	 >>> Harbor Related Incidents occurred 168 times
+	 >>> Explosives occurred 211 times
+	 >>> Prostitution occurred 417 times
+	 >>> Sex Offender Registration occurred 1043 times
+	 >>> Embezzlement occurred 339 times
+	 >>> License Plate Related Incidents occurred 594 times
+	 >>> Prisoner Related Incidents occurred 265 times
+	 >>> ARSON occurred 29 times
+	 >>> Aircraft occurred 23 times
+	 >>> Manslaughter occurred 14 times
+	 >>> Gambling occurred 15 times
+	 >>> Confidence Games occurred 1589 times
+	 >>> Indecent Assault occurred 208 times
+	 >>> Auto Theft occurred 2211 times
+	 >>> Firearm Violations occurred 830 times
+	 >>> Police Service Incidents occurred 1460 times
+	 >>> License Violation occurred 779 times
+	 >>> Auto Theft Recovery occurred 417 times
+	 >>> Arson occurred 43 times
+	 >>> Criminal Harassment occurred 72 times
+	 >>> Bomb Hoax occurred 51 times
+	 >>> Firearm Discovery occurred 339 times
+	 >>> Home Invasion occurred 27 times
+	 >>> Human Trafficking occurred 3 times
+	District Frequencies:
+	there are 13 districts
+	 >>> there were 28244 incidents in district C6
+	 >>> there were 58896 incidents in district B2
+	 >>> there were 50502 incidents in district C11
+	 >>> there were 42551 incidents in district A1
+	 >>> there were 52120 incidents in district D4
+	 >>> there were 20265 incidents in district E18
+	 >>> there were 17545 incidents in district A7
+	 >>> there were 26809 incidents in district D14
+	 >>> there were 21321 incidents in district E13
+	 >>> there were 37823 incidents in district B3
+	 >>> there were 7531 incidents in district A15
+	 >>> there were 17037 incidents in district E5
+	 >>> there were 1170 incidents in district NA
+	Shooting Frequencies:
+	 >>> 380730 No
+	 >>> 1084 Yes
+	Day of Week Frequencies:
+	 >>> there were a total of 54608 Tuesday incidents
+	 >>> there were a total of 54686 Monday incidents
+	 >>> there were a total of 54921 Thursday incidents
+	 >>> there were a total of 59159 Friday incidents
+	 >>> there were a total of 54867 Wednesday incidents
+	 >>> there were a total of 49115 Sunday incidents
+	 >>> there were a total of 54458 Saturday incidents
+	UCR Frequencies:
+	 >>> there were a total of 134571 Part Two crimes
+	 >>> there were a total of 142796 Part Three crimes
+	 >>> there were a total of 89451 Part One crimes
+	 >>> there were a total of 14966 Other crimes
+	 >>> there were a total of 30 NA crimes
+	Street Frequencies:
+	4891 streets were reported
+	================ This script took 14.230060815811ms to run ================
+    
+Submission for insert array:
+    5961, 7730, 7604, 7434, 6631, 6733, 6875, 5793, 6906, 6811, 7501, 7474, 7933, 7762, 7491, 7184, 6710, 6466, 6940, 5972, 7013, 6924, 7991, 7587, 7549, 7529, 7475, 7646, 6633, 6436, 5498, 5316, 5654, 5595, 6048, 6668, 8046, 8034, 8061, 7963, 7473, 7618, 7509, 6770, 7595, 7563, 7966, 8043, 8221, 8237, 7848, 7779, 7096, 2545
+Total inserted into table:
+    5961, 7730, 7604, 7434, 6631, 6733, 6875, 5793, 6906, 6811, 7501, 7474, 7933, 7762, 7491, 7184, 6710, 6466, 6940, 5972, 7013, 6924, 7991, 7587, 7549, 7529, 7475, 7646, 6633, 6436, 5498, 5316, 5654, 5595, 6048, 6665, 8044, 8031, 8058, 7960, 7473, 7613, 7507, 6770, 7594, 7562, 7966, 8043, 8219, 8237, 7847, 7779, 7096, 2545
+When diff was performed:
+    > line 36 () sub=6668 tot=6665 - difference of 3
+    > line 37 () sub=8046 tot=8044 - difference of 2
+    > line 38 () sub=8034 tot=8031 - difference of 3
+    > line 39 () sub=8061 tot=8058 - difference of 3
+    > line 40 () sub=7963 tot=7960 - difference of 3
+    > line 42 () sub=7618 tot=7613 - difference of 5
+    > line 43 () sub=7509 tot=7507 - difference of 2
+    > line 45 () sub=7595 tot=7594 - difference of 1
+    > line 46 () sub=7563 tot=7562 - difference of 1
+    > line 49 () sub=8221 tot=8219 - difference of 2
+    > line 51 () sub=7848 tot=7847 - difference of 1
