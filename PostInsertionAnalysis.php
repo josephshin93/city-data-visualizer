@@ -212,16 +212,16 @@
         }
         echo "Street Frequencies:\n";
         echo count($streetFrequencies)." streets were reported\n";
-        foreach($streetFrequencies as $k_street => $v_total){
-            echo " >>> ".$v_total." incidents occurred on ".$k_street."\n";
-        }
+//        foreach($streetFrequencies as $k_street => $v_total){
+//            echo " >>> ".$v_total." incidents occurred on ".$k_street."\n";
+//        }
     }
 
     createJsons();
     addTables();
     printResults();
     
-    $timeElapsed = microtime(true) - $start;
+    $timeElapsed = microtime(true) - $startTime;
     $timeElapsed = $timeElapsed*1000; //get the milliseconds of the script runtime
-    echo "This script took ".$timeElasped."ms to run\n"; 
+    echo "This script took ".$timeElapsed."ms to run\n"; 
 ?>
