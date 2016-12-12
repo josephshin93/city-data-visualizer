@@ -128,8 +128,9 @@
         fwrite($fp, $streetFrequenciesjson);
         fclose($fp);
     }
-    function addTables($db){
+    function addTables(){
         //create tables for frequencies/totals and add values
+        global $db, $monthlyTotals, $duplicates, $incidentFrequencies, $districtFrequencies, $shootingFrequencies, $dayWeekFrequencies, $ucrFrequencies, $streetFrequencies;
         $ret = $db->exec("CREATE TABLE IF NOT EXISTS MonthTotals (month TEXT PRIMARY KEY, total INT)");
         if(!$ret){ echo $db->lastErrorMsg(); }
         foreach($monthlyTotals as $k_month => $v_total){
@@ -217,10 +218,10 @@
     }
 
     createJsons();
-    addTables($db);
+    addTables();
     printResults();
     
     $timeElapsed = microtime(true) - $start;
-//    $timeElapsed = $timeElapsed/1000; //get the seconds of the script runtime
+    $timeElapsed = $timeElapsed*1000; //get the milliseconds of the script runtime
     echo "This script took ".$timeElasped."ms to run\n"; 
 ?>
