@@ -1,4 +1,6 @@
 <?php
+    //time the script
+    $startTime = microtime(true);
     //open up database
     class MyDB extends SQLite3 {
         function __construct() {
@@ -231,6 +233,7 @@
             }
         }
     }
-
-    
+    $timeElapsed = microtime(true) - $start;
+    $timeElapsed = $timeElapsed/1000; //get the seconds of the script runtime
+    echo "This script took ".$timeElasped."seconds to run\n"; 
 ?>
