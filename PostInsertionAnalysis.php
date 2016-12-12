@@ -4,8 +4,7 @@
     //open up database
     class MyDB extends SQLite3 {
         function __construct() {
-//            $this->open('Boston_Crime_Database.db');
-            $this->open('Test.db');
+            $this->open('Boston_Crime_Database.db');
         }
     }
     $db = new MyDB();
@@ -221,7 +220,7 @@
     addTables();
     printResults();
     
-    $timeElapsed = microtime(true) - $startTime;
-    $timeElapsed = $timeElapsed*1000; //get the milliseconds of the script runtime
+    $timeElapsed = microtime(true) - $startTime; //get the seconds of the script runtime
+//    $timeElapsed = $timeElapsed*1000; //get the milliseconds of the script runtime
     echo "This script took ".$timeElapsed."ms to run\n"; 
 ?>
