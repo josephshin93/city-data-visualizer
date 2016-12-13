@@ -1,42 +1,149 @@
 <!doctype html>
 <html>
-    <head>
+	<head>
+        <script src="../js/nouislider.min.js"></script>
+        <link rel="stylesheet" href="../css/nouislider.min.css">
+        <style>
+            .rst{
+                display: inline-block;
+                margin-right: 50px;
+                margin-left: 50px;
+            }
+            #slider{
+                margin-top: 100px;
+                margin-left: 50px;
+                width: 80%;
+            }
+        </style>
+	</head>
+	<body>
+        <div id="slider"></div>
+        <div id="result1" class="rst"></div>
+        <div id="result2" class="rst"></div>
+        <button id="query" onclick="query()">Query</button>
+        
+        
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    </head>
-    <body>
-        <h2>TEST PAGE</h2>
-        <div id="data" style="font-size: 8px; column-count: 3"></div>
-         <script>
-             var cdRequest = new XMLHttpRequest();
-             cdRequest.open("GET", "https://data.cityofboston.gov/resource/ufcx-3fdn.json?year=2012&month=11&day_week=Thursday", false);
-             cdRequest.send();
-             var bosTGCrimesJSON = JSON.parse(cdRequest.responseText),
-                 bosTGCrimesText = "",
-                 i;
-             for (i = 0; i < bosTGCrimesJSON.length; i = i + 1) {
-                bosTGCrimesText = bosTGCrimesText + bosTGCrimesJSON[i].incident_type_description + "@ location: " + bosTGCrimesJSON[i].location.coordinates + "<br>";
-             }
-             document.getElementById("data").innerHTML = bosTGCrimesText;
-         </script>
-        
-        <h4>QUERY RESULTS WILL RENDER HERE</h4>
-        <div id="results" style="font-size: 10px; color: green">right here...</div>
-        
         <script>
-            $.ajax({
-                type: "POST",
-                url: "backend.php",
-                data: {'id': '120705715'},
-                dataType: 'html',
-                success: function(data) {
-                    console.log(data);
+            var years = ["2012", "2013", "2014", "2015", "2016"],
+                months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                monthArray = [],
+                postDataArray = [];
+            for(var i in years){
+                for(var j in months){
+                    if (!(years[i] === "2012" && (months[j] === "January" || months[j] === "February" || months[j] === "March" || months[j] === "April" || months[j] === "May" || months[j] === "June"))) {
+                        monthArray.push(months[j]+" "+years[i])
+                        if (years[i] === "2012") {
+                            postDataArray.push("Twelve"+months[j]);
+                        } else if (years[i] === "2013") {
+                            postDataArray.push("Thirteen"+months[j]);
+                        } else if (years[i] === "2014") {
+                            postDataArray.push("Fourteen"+months[j]);
+                        } else if (years[i] === "2015") {
+                            postDataArray.push("Fifteen"+months[j]);
+                        } else if (years[i] === "2016") {
+                            postDataArray.push("Sixteen"+months[j]);
+                        }
+                    }
                 }
+            }
+            
+            var slider = document.getElementById('slider');
+            noUiSlider.create(slider, {
+                start: [33, 37],
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 53
+                },
+                step: 1
             });
+            var results = [document.getElementById('result1'), document.getElementById('result2')];
+            slider.noUiSlider.on('update', function (values, handle, unencoded, isTap, positions){
+                results[handle].innerHTML = monthArray[Math.round(values[handle])];  
+            });
+            var queryResults = {
+                'category': {},
+                'districts': {},
+                'shooting': {
+                    'No': 0,
+                    'Yes': 0
+                },
+                'hours': {},
+                'dayWeek': {
+                    'Sunday': 0,
+                    'Monday': 0,
+                    'Tuesday': 0,
+                    'Wednesday': 0,
+                    'Thursday': 0,
+                    'Friday': 0,
+                    'Saturday': 0
+                },
+                'ucr': {
+                    'Part One': 0,
+                    'Part Two': 0,
+                    'Part Three': 0,
+                    'Other': 0,
+                    'NA': 0
+                },
+                'streets': {}
+            },
+                queryTotal = 0;
+            function query(){
+                "use strict";
+                var post = {
+                        "months": []
+                    };
+                for(var i = Math.round(slider.noUiSlider.get()[0]); i <= Math.round(slider.noUiSlider.get()[1]); i++){
+                    post.months.push(postDataArray[i]);
+                }
+                console.log(post.months);
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8000",
+                    data: post,
+                    crossDomain: true,
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        queryTotal = data.length;
+                        console.log(queryTotal);
+                        for (var i = 0; i < data.length; i++){
+                            if (queryResults.category[data[i]['incident']] === undefined) {
+                                queryResults.category[data[i]['incident']] = 1;
+                            } else {
+                                queryResults.category[data[i]['incident']]++;
+                            }
+                            if (queryResults.districts[data[i]['district']] === undefined) {
+                                queryResults.districts[data[i]['district']] = 1;
+                            } else {
+                                queryResults.districts[data[i]['district']]++;
+                            }
+                            if (queryResults.streets[data[i]['street']] === undefined) {
+                                queryResults.streets[data[i]['street']] = 1;
+                            } else {
+                                queryResults.streets[data[i]['street']]++;
+                            }
+                            if (queryResults.hours[data[i]['hour']] === undefined) {
+                                queryResults.hours[data[i]['hour']] = 1;
+                            } else {
+                                queryResults.hours[data[i]['hour']]++;
+                            }
+                            queryResults.shooting[data[i]['shooting']]++;
+                            queryResults.dayWeek[data[i]['day_of_week']]++;
+                            queryResults.ucr[data[i]['ucr']]++;
+                        }
+                        console.log("done");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    }
+                });
+                console.log(queryResults);
+            }
+            
+            
+            
         </script>
-        
-        <h2>END OF TEST PAGE</h2>
-        
-        
-        
-    </body>
+	</body>
 </html>
