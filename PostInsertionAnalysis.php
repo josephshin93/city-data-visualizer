@@ -34,6 +34,11 @@
     $monthlyTotals = array();
     $duplicates = array();
     $incidentFrequencies = array();
+    //next four values are only printed, not exported as json or inserted into table
+    $maxLatitude = 0;
+    $maxLongitude = -75;
+    $minLatitude = 40;
+    $minLongitude = 0;
     $districtFrequencies = array();
     $shootingFrequencies = array();
     $dayWeekFrequencies = array();
@@ -59,6 +64,18 @@
                         $incidentFrequencies[$retArray['incident']]++;
                     }else{
                         $incidentFrequencies[$retArray['incident']] = 1;
+                    }
+                    if($retArray['latitude'] > $maxLatitude){
+                        $maxLatitude = $retArray['latitude'];
+                    }
+                    if($retArray['longitude'] > $maxLongitude){
+                        $maxLongitude = $retArray['longitude'];
+                    }
+                    if($retArray['latitude'] < $minLatitude){
+                        $minLatitude = $retArray['latitude'];
+                    }
+                    if($retArray['longitude'] < $minLongitude){
+                        $minLongitude = $retArray['longitude'];
                     }
                     if(isset($districtFrequencies[$retArray['district']])){
                         $districtFrequencies[$retArray['district']]++;
@@ -95,35 +112,35 @@
         //create json files of all results
         global $monthlyTotals, $duplicates, $incidentFrequencies, $districtFrequencies, $shootingFrequencies, $dayWeekFrequencies, $ucrFrequencies, $streetFrequencies;
         $monthlyTotalsjson = json_encode($monthlyTotals);
-        $fp = fopen('monthly_totals.json', 'w');
+        $fp = fopen('freqtot/monthly_totals.json', 'w');
         fwrite($fp, $monthlyTotalsjson);
         fclose($fp);
         $duplicatesjson = json_encode($duplicates);
-        $fp = fopen('duplicates.json', 'w');
+        $fp = fopen('freqtot/duplicates.json', 'w');
         fwrite($fp, $duplicatesjson);
         fclose($fp);
         $incidentFrequenciesjson = json_encode($incidentFrequencies);
-        $fp = fopen('incident_frequency.json', 'w');
+        $fp = fopen('freqtot/incident_frequency.json', 'w');
         fwrite($fp, $incidentFrequenciesjson);
         fclose($fp);
         $districtFrequenciesjson = json_encode($districtFrequencies);
-        $fp = fopen('district_frequency.json', 'w');
+        $fp = fopen('freqtot/district_frequency.json', 'w');
         fwrite($fp, $districtFrequenciesjson);
         fclose($fp);
         $shootingFrequenciesjson = json_encode($shootingFrequencies);
-        $fp = fopen('shooting_frequency.json', 'w');
+        $fp = fopen('freqtot/shooting_frequency.json', 'w');
         fwrite($fp, $shootingFrequenciesjson);
         fclose($fp);
         $dayWeekFrequenciesjson = json_encode($dayWeekFrequencies);
-        $fp = fopen('day_week_frequency.json', 'w');
+        $fp = fopen('freqtot/day_week_frequency.json', 'w');
         fwrite($fp, $dayWeekFrequenciesjson);
         fclose($fp);
         $ucrFrequenciesjson = json_encode($ucrFrequencies);
-        $fp = fopen('ucr_frequency.json', 'w');
+        $fp = fopen('freqtot/ucr_frequency.json', 'w');
         fwrite($fp, $ucrFrequenciesjson);
         fclose($fp);
         $streetFrequenciesjson = json_encode($streetFrequencies);
-        $fp = fopen('street_frequency.json', 'w');
+        $fp = fopen('freqtot/street_frequency.json', 'w');
         fwrite($fp, $streetFrequenciesjson);
         fclose($fp);
     }
@@ -181,7 +198,7 @@
     }
     function printResults(){
         //print all results of frequencies/totals
-        global $monthlyTotals, $duplicates, $incidentFrequencies, $districtFrequencies, $shootingFrequencies, $dayWeekFrequencies, $ucrFrequencies, $streetFrequencies;
+        global $monthlyTotals, $duplicates, $incidentFrequencies, $maxLatitude, $maxLongitude, $minLatitude, $minLongitude, $districtFrequencies, $shootingFrequencies, $dayWeekFrequencies, $ucrFrequencies, $streetFrequencies;
         echo "Monthly Totals:\n";
         foreach($monthlyTotals as $k_month => $v_total){
             echo " >>> ".$k_month." had ".$v_total." incidents\n";
@@ -192,6 +209,9 @@
         foreach($incidentFrequencies as $k_incident => $v_total){
             echo " >>> ".$k_incident." occurred ".$v_total." times\n";
         }
+        echo "Location Bounds:\n";
+        echo " >>> Max Latitude: ".$maxLatitude." Max Longitude: ".$maxLongitude."\n";
+        echo " >>> Min Latitude: ".$minLatitude." Min Longitude: ".$minLongitude."\n";
         echo "District Frequencies:\n";
         echo "there are ".count($districtFrequencies)." districts\n";
         foreach($districtFrequencies as $k_district => $v_total){
@@ -222,5 +242,5 @@
     
     $timeElapsed = microtime(true) - $startTime; //get the seconds of the script runtime
 //    $timeElapsed = $timeElapsed*1000; //get the milliseconds of the script runtime
-    echo "This script took ".$timeElapsed."ms to run\n"; 
+    echo "================ This script took ".$timeElapsed."seconds to run ================\n"; 
 ?>
