@@ -178,13 +178,13 @@
                 $c = $nl = 0;
                 foreach($data as $entry){
                     if(isset($entry['old'])){
-                        if($entry['old']['location']['coordinates'][1] > 0.0){ //filter out entries with no location
+                        if($entry['old']['location']['coordinates'][1] > 0.0){ //filter out entries with invalid locations
                             $entryData = extractDataOld($entry['old'], ((int)$keyy), ((int)$keym));
                             insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
                             $c++;
                         }else{ $nl++; }
                     }else{
-                        if(isset($entry['lat'])){ //filter out entries with no location
+                        if($entry['location']['coordinates'][1] > 0.0){ //filter out entries with invalid locations
                             $entryData = extractDataNew($entry, ((int)$keyy), ((int)$keym));
                             insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
                             $c++;
@@ -201,7 +201,7 @@
                 $data = json_decode($datajson, true);
                 $c = $nl = 0;
                 foreach($data as $entry){
-                    if(isset($entry['lat'])){ //filter out entries with no location
+                    if($entry['location']['coordinates'][1] > 0.0){ //filter out entries with invalid locations
                         $entryData = extractDataNew($entry, ((int)$keyy), ((int)$keym));
                         insertEntryIntoTable($db, $y, $m, $entryData[0], $entryData[1], $entryData[2], $entryData[3], $entryData[4], $entryData[5], $entryData[6], $entryData[7], $entryData[8], $entryData[9], $entryData[10], $entryData[11], $entryData[12], $entryData[13], $entryData[14]);
                         $c++;
@@ -231,5 +231,5 @@
     }
     $timeElapsed = microtime(true) - $startTime; //get the seconds of the script runtime
     $timeElapsed = $timeElapsed / 60; //get the minutes of the script runtime
-    echo "This script took ".$timeElapsed."min to run\n"; 
+    echo "================ This script took ".$timeElapsed."min to run ================\n"; 
 ?>
