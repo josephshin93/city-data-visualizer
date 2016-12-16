@@ -94,41 +94,55 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
-#mapbg {
-    height: 450px;
+.underConstr{
+    border: 1px dotted grey;
+}
+.scaffold{
+    overflow: hidden;
     width: 100%;
-    background-color: black;
 }
-#mapid {
-    height: 450px;
-    width: 90%;
-    left: 5%;
+#ti{
+    float: left;
+    margin-right: 10%;
 }
-#rspTxt {
-    font-size: 12px;
-    margin-left: 25px;
+#slider{
+    float: left;
+    width: 30%;
 }
-/*
-.subheader {
-    margin-top: 70px;
+#slider_value{
+    float: left;
+    position: relative;
+/*                top: 1px;*/
+/*                width: 20%;*/
+    text-align: center;
 }
-*/
-#bostonCrimeQuery {
-    display: inline-block;
-    margin-left: 30px;
-    font-size: 12px;
+#qbar{
+    float: left;
+    position: relative;
+/*                top: 1px;*/
+/*                width: 15%;*/
+    text-align: center;
 }
-#queryButton {
-    margin-left: 40px;
-    display: inline-block;
-    font-size: 12px;
+
+#mapid{
+    float: left;
+    width: 750px;
+    height: 700px;
+}
+#pies{
+    float: left;
+    width: 28%;
+    height: 700px;
+}
+.pie{
+    width: 100%;
+    height: 25%;
 }
 
 
-
-
-
+#timeline{
+    width: 99%;
+    height: 99px;
 
 
 
