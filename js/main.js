@@ -2,14 +2,19 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
 /*global define, $, jQuery, alert */
 
-var centerOfBostonCoordinates = [42.3601, -71.0589],
+var centerOfBostonCoordinates = [42.312626, -71.071870], //center was calculated from the bounds of hand designed grid
     pjfanLocationCoordinates = [42.3629, -71.0890],
-    mymap = L.map('mapid').setView(centerOfBostonCoordinates, 11),
+    mymap = L.map('mapid').setView(centerOfBostonCoordinates, 12),
     markers,
     pjfanMarkerIcon = L.icon({
         iconUrl: 'icons/pjfan_marker_icon.png',
         iconSize: [80, 107],
         iconAnchor: [40, 106]
+    }),
+    opMarkerIcon = L.icon({
+        iconUrl: 'icons/op-marker.png',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
     });
 
 function getMapboxApiKey() {
@@ -35,6 +40,7 @@ function getMapboxApiKey() {
 }
 getMapboxApiKey();
 
+
 //var pjfanLocationMarker = L.marker(pjfanLocationCoordinates, {icon: pjfanMarkerIcon}).addTo(mymap);
 //pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
 
@@ -52,97 +58,140 @@ getMapboxApiKey();
 //}
 //document.getElementById("rspTxt").innerHTML = bosThanksgivingCrimeIncidentALocation;
 
-
-
-/*
-    Structure of the post data that the QueryCrimeDatabase.php server will be receiving
-    
-    $_POST = {
-        "comp": "id number aka compnos",
-        "inc": "incident type description",
-        "coor": ["longitude", "latitude"],
-        "year": "year",
-        "month": "month",
-        "day": "day of the month",
-        "time": ["hour", "minute", "second"]
+var grid = [],
+    minLatitude = 42.227953,
+    minLongitude = -71.190647,
+    width = 0.237555,
+    height = 0.169347,
+    increment = 0.008467;
+for (i = 0; i < (height - increment); i += increment) {
+    for (j = 0; j < (width - increment); j += increment) {
+        var gridboxCoordinates = [];
+        gridboxCoordinates.push([minLatitude + i, minLongitude + j]);
+        gridboxCoordinates.push([minLatitude + increment + i, minLongitude + j]);
+        gridboxCoordinates.push([minLatitude + increment + i, minLongitude + increment + j]);
+        gridboxCoordinates.push([minLatitude + i, minLongitude + increment + j]);
+        gridbox = L.polygon(
+            gridboxCoordinates,
+            {
+                fillColor: "#ff0000", //red
+                stroke: false,
+                fillOpacity: 0
+            }
+        ).addTo(mymap);
+        grid.push(gridbox);
     }
-*/
+}
 
-function queryDatabase() {
+var years = ["2012", "2013", "2014", "2015", "2016"],
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    displayMonths = [],
+    postMonths = [],
+    queryResults,
+    queryTotal,
+    i,
+    j;
+    
+for (i in years) {
+    for (j in months) {
+        if (!(years[i] === "2012" && (months[j] === "January" || months[j] === "February" || months[j] === "March" || months[j] === "April" || months[j] === "May" || months[j] === "June"))) {
+            displayMonths.push(months[j] + " " + years[i]);
+            if (years[i] === "2012") {
+                postMonths.push("Twelve" + months[j]);
+            } else if (years[i] === "2013") {
+                postMonths.push("Thirteen" + months[j]);
+            } else if (years[i] === "2014") {
+                postMonths.push("Fourteen" + months[j]);
+            } else if (years[i] === "2015") {
+                postMonths.push("Fifteen" + months[j]);
+            } else if (years[i] === "2016") {
+                postMonths.push("Sixteen" + months[j]);
+            }
+        }
+    }
+}
+function query(post) {
     "use strict";
-    var form = document.getElementById("bostonCrimeQuery"),
-        queryData = {};
-    
-    if ($("input[name=comp]").val() !== "") { queryData.comp = $("input[name=comp]").val(); }
-    
-    if ($("#dateyear").val() !== "") { queryData.year = $("#dateyear").val(); }
-    if ($("#datemonth").val() !== "") { queryData.month = $("#datemonth").val(); }
-    if ($("#dateday").val() !== "") { queryData.day = $("#dateday").val(); }
-    
-    if ($("input[name=inc]").val() !== "") { queryData.inc = $("input[name=inc]").val(); }
-    
-//    if ($("input[name=coor-lon]").val() !== "" || $("input[name=coor-lat]").val() !== "") {
-//        queryData.coor = [];
-//    }
-//    if ($("input[name=coor-lon]").val() !== "") {
-//        queryData.coor.push($("input[name=coor-lon]").val());
-//    }
-//    if ($("input[name=coor-lat]").val() !== "") {
-//        queryData.coor.push($("input[name=coor-lat]").val());
-//    }
-//    
-//    if ($("input[name=time-hour]").val() !== "" || $("input[name=time-min]").val() !== "" || $("input[name=time-sec]").val() !== "") {
-//        queryData.time = [];
-//    }
-//    if ($("input[name=time-hour]").val() !== "") {
-//        queryData.time.push($("input[name=time-hour]").val());
-//    }
-//    if ($("input[name=time-min]").val() !== "") {
-//        queryData.time.push($("input[name=time-min]").val());
-//    }
-//    if ($("input[name=time-sec]").val() !== "") {
-//        queryData.time.push($("input[name=time-sec]").val());
-//    }
-    
-    console.log(queryData);
-    
+    console.log(post);
+    var queryResults = {
+            'category': {},
+            'districts': {},
+            'shooting': {
+                'No': 0,
+                'Yes': 0
+            },
+            'hours': {},
+            'dayWeek': {
+                'Sunday': 0,
+                'Monday': 0,
+                'Tuesday': 0,
+                'Wednesday': 0,
+                'Thursday': 0,
+                'Friday': 0,
+                'Saturday': 0
+            },
+            'ucr': {
+                'Part One': 0,
+                'Part Two': 0,
+                'Part Three': 0,
+                'Other': 0,
+                'NA': 0
+            },
+            'streets': {}
+        },
+        queryTotal = 0;
     $.ajax({
         type: "POST",
-        url: "http://localhost:8100",
-        data: queryData,
+        url: "http://localhost:8000",
+        data: post,
         crossDomain: true,
         success: function (data) {
-            mymap.eachLayer(function (layer) {
-                if (layer._popupHandlersAdded) { //all markers must have popups added in order points to be cleared before new ones are added
-                    mymap.removeLayer(layer);
-                }
-            });
-            var j = JSON.parse(data),
-                i,
-                comp = 0,
-                inc = 1,
-                lon = 2,
-                lat = 3,
-                year = 4,
-                month = 5,
-                day = 6,
-                hour = 7,
-                min = 8,
-                sec = 9;
-            console.log(j.length + " entries received");
-            for (i = 0; i < j.length; i++) {
-                //perform necessary actions with each entry of the query that was made
-                var m = L.marker([j[i][lat], j[i][lon]]),
-                    t;
-                if (j[i][hour] < 12) {
-                    t = j[i][hour] + ":" + j[i][min] + ":" + j[i][sec] + "AM";
+            data = JSON.parse(data);
+            queryTotal = data.length;
+            console.log(queryTotal + " entries received");
+            var gridIndices = [];
+            for (i = 0; i < data.length; i++) {
+                if (queryResults.category[data[i].incident] === undefined) {
+                    queryResults.category[data[i].incident] = 1;
                 } else {
-                    t = (j[i][hour] - 12) + ":" + j[i][min] + ":" + j[i][sec] + "PM";
+                    queryResults.category[data[i].incident]++;
                 }
-                m.bindPopup(j[i][inc] + " occured at " + t);
-                markers.addLayer(m);
+                if (queryResults.districts[data[i].district] === undefined) {
+                    queryResults.districts[data[i].district] = 1;
+                } else {
+                    queryResults.districts[data[i].district]++;
+                }
+                if (queryResults.streets[data[i].street] === undefined) {
+                    queryResults.streets[data[i].street] = 1;
+                } else {
+                    queryResults.streets[data[i].street]++;
+                }
+                if (queryResults.hours[data[i].hour] === undefined) {
+                    queryResults.hours[data[i].hour] = 1;
+                } else {
+                    queryResults.hours[data[i].hour]++;
+                }
+                queryResults.shooting[data[i].shooting]++;
+                queryResults.dayWeek[data[i].day_of_week]++;
+                queryResults.ucr[data[i].ucr]++;
+                
+                var row = Math.ceil((data[i].latitude - minLatitude) / increment),
+                    column = Math.ceil((data[i].longitude - minLongitude) / increment),
+                    gridIndex = (((row - 1) * 28) + column - 1);
+                if (gridIndices[gridIndex] === undefined) {
+                    gridIndices[gridIndex] = 1;
+                } else {
+                    gridIndices[gridIndex]++;
+                }
             }
-            mymap.addLayer(markers);
+            console.log(gridIndices);
+            var tot = 0;
+            for (i = 0; i < gridIndices.length; i++) {
+                if (gridIndices[i] !== undefined) {
+//                    console.log("index:" + i + " sum:" + gridIndices[i] + " opacity:" + (gridIndices[i] / 250));
+                    grid[i].setStyle({fillOpacity: (gridIndices[i] / 250)});
+                }
+            }
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -150,19 +199,14 @@ function queryDatabase() {
             console.log(thrownError);
         }
     });
-    
-    
+    console.log(queryResults);
 }
-
-
-
-
-
-
-
-
-
-
-
-
+function showValue(newValue) {
+    "use strict";
+    document.getElementById("slider_value").innerHTML = displayMonths[newValue];
+    var postData = {
+        month: postMonths[newValue]
+    };
+    query(postData);
+}
 
