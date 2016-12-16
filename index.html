@@ -14,16 +14,11 @@
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         
-        <!-- leaflet files -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css"/>
-        <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+        <!-- leaflet stylesheet -->
+        <link rel="stylesheet" href="leaflet/leaflet.css"/>
         
-        <!-- mapbox files -->
-        <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.standalone.js'></script>
+        <!-- mapbox stylesheet -->
         <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
-        
-        <!-- d3 files -->
-        <script src="https://d3js.org/d3.v4.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -31,80 +26,29 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h2>Boston Crime Data Visualizer</h2>
-        <div id="mapbg"><div id="mapid"></div></div>
-        <h4 class="subheader">Boston Crime Query</h4>
-        <form id="bostonCrimeQuery">
-            SEARCH OPTIONS&nbsp;&nbsp;&nbsp;
-            Compnos: <input type="text" name="comp">&nbsp;or&nbsp;
-            Date: 
-            <select id="dateyear" name="year">
-                <option value=""></option>
-                <option value="2012">2012</option>
-                <option value="2013">2013</option>
-                <option value="2014">2014</option>
-                <option value="2015">2015</option>
-            </select>
-            <select id="datemonth" name="month">
-                <option value=""></option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-            <select id="dateday" name="day">
-                <option value=""></option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-            </select>
-            Incident Name: <input type="text" name="inc">&nbsp;
-<!--
-            Location by coordinates: <input type="text" name="coor-lon">&nbsp;<input type="text" name="coor-lat">&nbsp;
-            Time: <input type="text" name="time-hour">&nbsp;<input type="text" name="time-min">&nbsp;<input type="text" name="time-sec"><br>
--->
-        </form>
-        <button id="queryButton" onclick="queryDatabase()">SEARCH</button>
+        <div class="scaffold underConstr">
+            <h2 id="ti">Boston Crime Data Visualization</h2>
+            <div id="qbar">Select Month</div>
+            <div id="slider" class="underConstr"><input style="width: 100%" type="range" min="0" max="53" step="1" onchange="showValue(this.value)" /></div>
+            <div id="slider_value" class="underConstr"></div>
+        </div>
+        <div class="scaffold underConstr">
+            <div id="mapid" class="underConstr"></div>
+            <div id="pies" class="underConstr">
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+            </div>
+        </div>
+        <div class="scaffold underConstr">
+            <div id="timeline" class="underConstr"></div>
+        </div>
         
-
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+        <script src="js/vendor/jquery-1.12.0.min.js"></script>
+        <script src="leaflet/leaflet.js"></script>
+        <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.standalone.js'></script>
+        <script src="js/d3.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
