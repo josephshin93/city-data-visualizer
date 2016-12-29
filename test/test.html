@@ -4,100 +4,150 @@
         <script src="../js/nouislider.min.js"></script>
         <link rel="stylesheet" href="../css/nouislider.min.css">
         <style>
-            .rst{
-                display: inline-block;
-                margin-right: 50px;
-                margin-left: 50px;
+            .underConstr{
+                border: 1px dotted grey;
+            }
+            .scaffold{
+                overflow: hidden;
+                width: 100%;
+            }
+            #ti{
+                float: left;
+                margin-right: 10%;
             }
             #slider{
-                margin-top: 100px;
-                margin-left: 50px;
-                width: 80%;
+                float: left;
+                width: 30%;
+            }
+            #slider_value{
+                float: left;
+                position: relative;
+/*                top: 1px;*/
+/*                width: 20%;*/
+                text-align: center;
+            }
+            #qbar{
+                float: left;
+                position: relative;
+/*                top: 1px;*/
+/*                width: 15%;*/
+                text-align: center;
+            }
+            
+            #map{
+                float: left;
+                width: 50%;
+                height: 700px;
+            }
+            #pies{
+                float: left;
+                width: 49.5%;
+                height: 700px;
+            }
+            .pie{
+                width: 100%;
+                height: 25%;
+            }
+            
+            
+            #timeline{
+                width: 99.7%;
+                height: 99px;
             }
         </style>
 	</head>
 	<body>
-        <div id="slider"></div>
-        <div id="result1" class="rst"></div>
-        <div id="result2" class="rst"></div>
-        <button id="query" onclick="query()">Query</button>
+        <div class="scaffold underConstr">
+            <h2 id="ti">Boston Crime Data Visualization</h2>
+            <div id="qbar">Select Month</div>
+            <div id="slider" class="underConstr"><input style="width: 100%" type="range" min="0" max="53" step="1" onchange="showValue(this.value)" /></div>
+            <div id="slider_value" class="underConstr"></div>
+        </div>
+        <div class="scaffold underConstr">
+<!--
+            <div id="pies" class="underConstr">
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+            </div>
+-->
+            <div id="map" class="underConstr"></div>
+            <div id="pies" class="underConstr">
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+                <div class="pie underConstr"></div>
+            </div>
+        </div>
+        <div class="scaffold underConstr">
+            <div id="timeline" class="underConstr"></div>
+        </div>
+        
+        
         
         
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>
             var years = ["2012", "2013", "2014", "2015", "2016"],
                 months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                monthArray = [],
-                postDataArray = [];
+                displayMonths = [],
+                postMonths = [];
             for(var i in years){
                 for(var j in months){
                     if (!(years[i] === "2012" && (months[j] === "January" || months[j] === "February" || months[j] === "March" || months[j] === "April" || months[j] === "May" || months[j] === "June"))) {
-                        monthArray.push(months[j]+" "+years[i])
+                        displayMonths.push(months[j]+" "+years[i])
                         if (years[i] === "2012") {
-                            postDataArray.push("Twelve"+months[j]);
+                            postMonths.push("Twelve"+months[j]);
                         } else if (years[i] === "2013") {
-                            postDataArray.push("Thirteen"+months[j]);
+                            postMonths.push("Thirteen"+months[j]);
                         } else if (years[i] === "2014") {
-                            postDataArray.push("Fourteen"+months[j]);
+                            postMonths.push("Fourteen"+months[j]);
                         } else if (years[i] === "2015") {
-                            postDataArray.push("Fifteen"+months[j]);
+                            postMonths.push("Fifteen"+months[j]);
                         } else if (years[i] === "2016") {
-                            postDataArray.push("Sixteen"+months[j]);
+                            postMonths.push("Sixteen"+months[j]);
                         }
                     }
                 }
             }
-            
-            var slider = document.getElementById('slider');
-            noUiSlider.create(slider, {
-                start: [33, 37],
-                connect: true,
-                range: {
-                    'min': 0,
-                    'max': 53
-                },
-                step: 1
-            });
-            var results = [document.getElementById('result1'), document.getElementById('result2')];
-            slider.noUiSlider.on('update', function (values, handle, unencoded, isTap, positions){
-                results[handle].innerHTML = monthArray[Math.round(values[handle])];  
-            });
-            var queryResults = {
-                'category': {},
-                'districts': {},
-                'shooting': {
-                    'No': 0,
-                    'Yes': 0
-                },
-                'hours': {},
-                'dayWeek': {
-                    'Sunday': 0,
-                    'Monday': 0,
-                    'Tuesday': 0,
-                    'Wednesday': 0,
-                    'Thursday': 0,
-                    'Friday': 0,
-                    'Saturday': 0
-                },
-                'ucr': {
-                    'Part One': 0,
-                    'Part Two': 0,
-                    'Part Three': 0,
-                    'Other': 0,
-                    'NA': 0
-                },
-                'streets': {}
-            },
-                queryTotal = 0;
-            function query(){
-                "use strict";
-                var post = {
-                        "months": []
-                    };
-                for(var i = Math.round(slider.noUiSlider.get()[0]); i <= Math.round(slider.noUiSlider.get()[1]); i++){
-                    post.months.push(postDataArray[i]);
+            function showValue(newValue) {
+                document.getElementById("slider_value").innerHTML = displayMonths[newValue];
+                var postData = {
+                    month: postMonths[newValue]
                 }
-                console.log(post.months);
+                query(postData);
+            }
+            var queryResults,
+                queryTotal;
+            function query(post){
+                "use strict";
+                console.log(post);
+                var queryResults = {
+                        'category': {},
+                        'districts': {},
+                        'shooting': {
+                            'No': 0,
+                            'Yes': 0
+                        },
+                        'hours': {},
+                        'dayWeek': {
+                            'Sunday': 0,
+                            'Monday': 0,
+                            'Tuesday': 0,
+                            'Wednesday': 0,
+                            'Thursday': 0,
+                            'Friday': 0,
+                            'Saturday': 0
+                        },
+                        'ucr': {
+                            'Part One': 0,
+                            'Part Two': 0,
+                            'Part Three': 0,
+                            'Other': 0,
+                            'NA': 0
+                        },
+                        'streets': {}
+                    },
+                    queryTotal = 0;
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:8000",
