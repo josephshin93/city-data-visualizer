@@ -2,98 +2,70 @@
 <html>
 	<head>
 		<style>
-			#map{
-				height: 600px;
-				width: 100%;
-				border: 1px dotted black;
-			}
-			#maptext{
-				display: relative;
-				vertical-align: middle;
-				text-align: center;
-			}
-			#dashboard{
-				border: 1px dotted blue;
-			}
-/*
-            .chart {
+			#chart{
+                border: 1px dotted grey;
+            }
+            .axis{
+
+            }
+            .x{
+
+            }
+            .y{
+
+            }
+
+            .chart rect {
+              fill: steelblue;
+            }
+
+            .chart text {
+              fill: white;
+              font: 10px sans-serif;
+              text-anchor: end;
+            }
+            .chart{
+                border: 1px dotted grey;
                 display: block;
-                margin: auto;
-            }
-*/
-            .bar {
-                fill: steelblue;
-            }
-            .axis path,
-            .axis line {
-              fill: none;
-              stroke: #000;
-              shape-rendering: crispEdges;
-            }
-            .x.axis path {
-                display: block;
-            }
-            .y.axis path {
-                display: none;
             }
 		</style>
-		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-		<script src="https://d3js.org/d3.v4.min.js"></script>
+		
 	</head>
 	<body>
-		<div id="map"><p id="maptext">map goes here</p></div>
-		<div id="dashboard"></div>
-        <svg class="chart"></svg>
-		<div id="data"></div>
-		<script>
-			var timearray = [],
-                incidentfreq = {},
-                incidentfreqarray = [];
-            $.ajax({
-                type: "GET",
-                url: "https://data.cityofboston.gov/resource/ufcx-3fdn.json",
-                data: {
-                    "$limit" : 7000,
-                    "year" : 2014,
-                    "month" : 12,
-                    "$where" : "within_circle(location, 42.3601, -71.0589, 20000)"
-                },
-                crossDomain: true,
-                success: function (data) {
-                    console.log(data);
-                    
-                    for (entry in data) {
-                    }
-                    
-//                    for (entry in data) {
-//                        timearray.push({incident:data[entry].incident_type_description, hour:data[entry].fromdate.substring(11, 13), minute:data[entry].fromdate.substring(14, 16)});
-//                        
-//                        if(data[entry].incident_type_description in incidentfreq) {
-//                            incidentfreq[data[entry].incident_type_description] += 1;
-//                        } else {
-//                            incidentfreq[data[entry].incident_type_description] = 1;
-//                        }
-//                    }
-//                    
-//                    for(entry in incidentfreq) {
-//                        incidentfreqarray.push({name:entry, freq:incidentfreq[entry]});
-//                    }
-//                    
-//                    handleSVGBarChartSideways(".chart", incidentfreqarray);
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.status);
-                    console.log(thrownError);
-                }
-            });
-            
-            console.log(timearray);
-            console.log(incidentfreq);
-            console.log(incidentfreqarray);
-            
+        <h2>Boston Crime Data Visualizer</h2>
+        <svg id="chart"></svg>
 
-            var data = [4, 8, 15, 16, 23, 42];
-            var bata = [
+        <svg class="chart" width="420" height="200">
+          <g transform="translate(0,0)">
+            <rect width="40" height="19"></rect>
+            <text x="37" y="9.5" dy=".35em">4</text>
+          </g>
+          <g transform="translate(0,20)">
+            <rect width="80" height="19"></rect>
+            <text x="77" y="9.5" dy=".35em">8</text>
+          </g>
+          <g transform="translate(0,60)">
+            <rect width="150" height="19"></rect>
+            <text x="147" y="9.5" dy=".35em">15</text>
+          </g>
+          <g transform="translate(0,80)">
+            <rect width="160" height="19"></rect>
+            <text x="157" y="9.5" dy=".35em">16</text>
+          </g>
+          <g transform="translate(0,100)">
+            <rect width="230" height="19"></rect>
+            <text x="227" y="9.5" dy=".35em">23</text>
+          </g>
+          <g transform="translate(0,120)">
+            <rect width="420" height="19"></rect>
+            <text x="417" y="9.5" dy=".35em">42</text>
+          </g>
+        </svg>
+
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+		<script>
+			var data = [
               {name: "Locke",    value:  4},
               {name: "Reyes",    value:  8},
               {name: "Ford",     value: 15},
@@ -101,90 +73,69 @@
               {name: "Shephard", value: 23},
               {name: "Kwon",     value: 42}
             ];
+            var dataLabels = ["Locke", "Reyes", "Ford", "Jarrah", "Shephard", "Kwon"];
             
-            function handleSVGBarChartSideways(id, data) {
-                
-                var width = 1000,
-                    barHeight = 20;
+            var chart = d3.select("#chart"),
+                chartWidth = 600,
+                barHeight = 20;
 
-                var x = d3.scaleLinear()
-                    .range([0, width])
-                    .domain([0, d3.max(data, function(d) { return d.freq; })]);
-
-                var chart = d3.select(id)
-                    .attr("width", width)
-                    .attr("height", barHeight * data.length)
-                    .append("g")
-                        .attr("class", "x axis")
-                        .call(d3.axisBottom(x));
-                        
+            var x = d3.scaleLinear()
+                .domain([0, d3.max(function(d) { return d.value; })])//actual values
+                .range([0, chartWidth]);//pixels
                 
-                var bar = chart.selectAll("g")
-                    .data(data)
+            var y = d3.scaleBand()
+                .domain(data.map(function(d) { return d.name; }))
+                .rangeRound([0, barHeight * data.length]);
+                
+            var xAxis = d3.axisBottom(x);
+            var yAxis = d3.axisLeft(y);
+
+            // console.log();
+
+            chart.attr("width", chartWidth + 100)
+                .attr("height", data.length * barHeight + 40);
+            chart.append("g")
+                .attr("transform", "translate(80," + (barHeight * data.length + 20) + ")")
+                .call(xAxis);
+            chart.append("g")
+                .attr("transform", "translate(80, 20)")
+                .call(yAxis);
+
+            var bar = chart.selectAll("g")
+                  .data(data)
                 .enter().append("g")
-                    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+                  .attr("transform", function(d , i) { return "translate(0, " + i * barHeight + ")"; });
 
-                bar.append("rect")
-                    .attr("class", "bar")
-                    .attr("width", function(d) { return x(d.freq); })
-                    .attr("height", barHeight - 1);
+            bar.append("rect")
+                .attr("width", function(d) { return  x(d.value); })
+                .attr("height", barHeight - 1);
 
-                bar.append("text")
-                    .attr("x", function(d) { return x(d.freq) - 3; })
-                    .attr("y", barHeight / 2)
-                    .attr("dy", ".35em")
-                    .text(function(d) { return d.name; });
 
-                function type(d) {
-                  d.value = +d.value; // coerce to number
-                  return d;
-                }
-                
-//                var margin = {top:20, right:30, bottom:30, left:200},
-//                    width = 1060 - margin.left - margin.right,
-//                    height = 900 - margin.top - margin.bottom;
-//
-//                var y = d3.scaleBand()
-//                    .domain(data.map(function(d) { return d.name; }))
-//                    .rangeRound([0, width]).padding(0.1);
-//                var x = d3.scaleLinear()
-//                    .domain([0, d3.max(data, function(d) { return d.freq; })])
-//                    .rangeRound([0, height]);
-//
-//                var chart = d3.select(id)
-//                        .attr("width", width + margin.left + margin.right)
-//                        .attr("height", height + margin.top + margin.bottom)
-//                    .append("g")
-//                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-//                    .append("g")
-//                        .attr("class", "axis x")
-//                        .attr("transform", "translate(0," + height + ")")
-//                        .call(d3.axisBottom(x))
-//                    .append("g")
-//                        .attr("class", "axis y")
-//                        .attr("transform", "translate(0,-" + height + ")")
-//                        .call(d3.axisLeft(y))
-//                    .selectAll(".bar")
-//                        .data(data)
-//                        .enter().append("rect")
-//                            .attr("class", "bar")
-//                            .attr("x", function(d) { return y(d.name); })
-//                            .attr("y", function(d) { return x(d.freq); })
-//                            .attr("height", function(d) { return height - x(d.freq); })
-//                            .attr("width", y.bandwidth());
-//
-//                function type(d) {
-//                    d.value = +d.value;
-//                    return d;
-//                }
-            }
+
             
+
+
+            // var chart = d3.select("#chart")
+            //     .attr("width", chartWidth)
+            //     .attr("height", (data.length * barHeight));
+            // var bar = chart.selectAll("g")
+            //     .data(data)
+            // .enter().append("g")
+            //     .attr("transform", function (d, i) { return "translate(0," + i * barHeight + ")"; });
+            // bar.append("rect")
+            //     .attr("class", "bar")
+            //     .attr("width", function (d) { return x(d.value); })
+            //     .attr("height", barHeight - 1);
+            // bar.append("text")
+            //     .attr("x", function (d) { return x(d.name) - 3; })
+            //     .attr("y", barHeight / 2)
+            //     .attr("dy", ".35em");
+            //     // .text(function (d) { return d.name; });
             
-            function timeDataDashboard(id, fData, data) {
-                var barColor = "steelblue";
-                
+            function type(d) {
+                d.value = +d.value;
+                return d;
             }
-                
 		</script>		
 	</body>
 </html>
