@@ -36,8 +36,8 @@
     $incidentFrequencies = array();
     //next four values are only printed, not exported as json or inserted into table
     $maxLatitude = 0;
-    $maxLongitude = -75;
-    $minLatitude = 40;
+    $maxLongitude = -72;
+    $minLatitude = 43;
     $minLongitude = 0;
     $districtFrequencies = array();
     $shootingFrequencies = array();
@@ -206,7 +206,7 @@
         echo "Duplicates:\n";
         echo " >>> total count: ".count($duplicates)."\n";
         echo "Incident Frequencies:\n";
-        echo " >>> there are a total of ".count($incidentFrequency)." incident categories\n";
+        echo " >>> there are a total of ".count($incidentFrequencies)." incident categories\n";
         foreach($incidentFrequencies as $k_incident => $v_total){
             echo " >>> ".$k_incident." occurred ".$v_total." times\n";
         }
