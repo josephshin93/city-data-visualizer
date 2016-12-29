@@ -11,12 +11,10 @@
     if (!$db) { echo $db->lastErrorMsg(); }
   
     $return = array();
-    if(isset($_POST["months"])){
-        foreach($_POST["months"] as $month){
-             $ret = $db->query("SELECT * FROM ".$month);
-             while($retArray = $ret->fetchArray(SQLITE3_ASSOC)){
-                 array_push($return, $retArray);
-             }
+    if(isset($_POST["month"])){
+         $ret = $db->query("SELECT * FROM ".$_POST["month"]);
+         while($retArray = $ret->fetchArray(SQLITE3_ASSOC)){
+             array_push($return, $retArray);
         }
     }
     echo json_encode($return);
