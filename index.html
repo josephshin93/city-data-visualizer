@@ -26,13 +26,30 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="scaffold underConstr">
-            <h2 id="ti">Boston Crime Data Visualization</h2>
-            <div id="qbar">Select Month</div>
-            <div id="slider" class="underConstr"><input style="width: 100%" type="range" min="0" max="53" step="1" onchange="showValue(this.value)" /></div>
-            <div id="slider_value" class="underConstr"></div>
+        <h2>Boston Crime Data Visualization</h2>
+        <div id="map-bg">
+            <div id="map"></div>
         </div>
-        <div class="scaffold underConstr">
+        <div id="query-bar">
+            <p id="slider-value">Select Month</p>
+            <input id="slider"type="range" min="0" max="53" step="1" onchange="showValue(this.value)"/>
+        </div>
+        <div id="charts">
+            <svg id="incident-pie"></svg>
+        </div>
+        <div id="colors"></div>
+        
+        
+<!--
+        <div class="wide-container underConstr">
+            <h2 class="underConstr">Boston Crime Data Visualization</h2>
+            <div class="underConstr">
+                <p class="underConstr">Select Month</p>
+                <input class="underConstr" type="range" min="0" max="53" step="1" onchange="showValue(this.value)" />
+                <p id="slider_value" class="underConstr">Select Month</p>
+            </div>
+        </div>
+        <div class="wide-container underConstr">
             <div id="mapid" class="underConstr"></div>
             <div id="pies" class="underConstr">
                 <div class="pie underConstr"></div>
@@ -41,9 +58,10 @@
                 <div class="pie underConstr"></div>
             </div>
         </div>
-        <div class="scaffold underConstr">
+        <div class="wide-container underConstr">
             <div id="timeline" class="underConstr"></div>
         </div>
+-->
         
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
         <script src="leaflet/leaflet.js"></script>
