@@ -94,41 +94,81 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-.underConstr{
+body{
+/*
+    background-color: black;
+    color: white;
+*/
+}
+.bord{
     border: 1px dotted grey;
 }
-.scaffold{
-    overflow: hidden;
+#map-bg{
+    width: 100%;
+    background-color: black;
+}
+#map{
+    margin: auto;
+    width: 750px;
+    height: 700px;
+}
+#wide-container{
+    overflow: auto;
     width: 100%;
 }
+#query-bar{
+    overflow: auto;
+    margin: auto;
+    width: 750px;
+}
+#slider-value{
+    display: inline-block;
+    width: 150px;
+    margin-right: 20px;
+}
+#slider{
+    display: inline-block;
+    width: 550px;
+}
+#charts{
+    overflow: auto;
+    width: 100%;
+}
+#incident-pie{
+/*    margin: auto;*/
+}
+
+
+/*d3 styles*/
+.bar {
+    fill: steelblue;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.x.axis path {
+    display: block;
+}
+.y.axis path {
+    display: none;
+}
+
+
+/*
 #ti{
     float: left;
     margin-right: 10%;
 }
-#slider{
-    float: left;
-    width: 30%;
-}
-#slider_value{
-    float: left;
-    position: relative;
-/*                top: 1px;*/
-/*                width: 20%;*/
-    text-align: center;
-}
+
 #qbar{
     float: left;
-    position: relative;
-/*                top: 1px;*/
-/*                width: 15%;*/
-    text-align: center;
+    margin-top: 19.92px;
 }
 
-#mapid{
-    float: left;
-    width: 750px;
-    height: 700px;
-}
+
 #pies{
     float: left;
     width: 28%;
@@ -144,6 +184,7 @@ textarea {
     width: 99%;
     height: 99px;
 
+*/
 
 
 
