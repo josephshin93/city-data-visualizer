@@ -1,22 +1,25 @@
-/*global L*/
+/*global L, d3*/
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
 /*global define, $, jQuery, alert */
 
 var centerOfBostonCoordinates = [42.312626, -71.071870], //center was calculated from the bounds of hand designed grid
-    pjfanLocationCoordinates = [42.3629, -71.0890],
-    mymap = L.map('mapid').setView(centerOfBostonCoordinates, 12),
-    markers,
-    pjfanMarkerIcon = L.icon({
-        iconUrl: 'icons/pjfan_marker_icon.png',
-        iconSize: [80, 107],
-        iconAnchor: [40, 106]
-    }),
-    opMarkerIcon = L.icon({
-        iconUrl: 'icons/op-marker.png',
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-    });
+    mymap = L.map('map').setView(centerOfBostonCoordinates, 12),
+    i, //incrementor
+    j; //incrementor
 
+//optional function of marking peter's location
+function markPjfanLocation() {
+    "use strict";
+    var pjfanLocationCoordinates = [42.3629, -71.0890],
+        pjfanMarkerIcon = L.icon({
+            iconUrl: 'icons/pjfan_marker_icon.png',
+            iconSize: [80, 107],
+            iconAnchor: [40, 106]
+        }),
+        pjfanLocationMarker = L.marker(pjfanLocationCoordinates, {icon: pjfanMarkerIcon}).addTo(mymap);
+    pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
+}
+//must retrieve Mapbox API key from node server
 function getMapboxApiKey() {
     "use strict";
     $.ajax({
@@ -30,7 +33,6 @@ function getMapboxApiKey() {
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 accessToken: data
             }).addTo(mymap);
-            markers = new L.FeatureGroup();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
@@ -40,33 +42,18 @@ function getMapboxApiKey() {
 }
 getMapboxApiKey();
 
-
-//var pjfanLocationMarker = L.marker(pjfanLocationCoordinates, {icon: pjfanMarkerIcon}).addTo(mymap);
-//pjfanLocationMarker.bindPopup("<b>Peter \"BBOY\" Fan's Location</b>");
-
-//var request = new XMLHttpRequest();
-//request.open("GET", "https://data.cityofboston.gov/resource/ufcx-3fdn.json?year=2012&month=11&day_week=Thursday", false);
-//request.send();
-//var bosThanksgivingCrime = JSON.parse(request.responseText),
-//    bosThanksgivingCrimeIncidentALocation = "",
-//    i;
-//for (i = 0; i < bosThanksgivingCrime.length; i = i + 1) {
-//    bosThanksgivingCrimeIncidentALocation = bosThanksgivingCrimeIncidentALocation + bosThanksgivingCrime[i].incident_type_description + "@ location: " + bosThanksgivingCrime[i].location.coordinates + "<br>";
-//    
-//    var tempMarker = L.marker([bosThanksgivingCrime[i].location.coordinates[1], bosThanksgivingCrime[i].location.coordinates[0]]).addTo(mymap);
-//    tempMarker.bindPopup(bosThanksgivingCrime[i].incident_type_description);
-//}
-//document.getElementById("rspTxt").innerHTML = bosThanksgivingCrimeIncidentALocation;
-
+//create choropleth grid
 var grid = [],
     minLatitude = 42.227953,
     minLongitude = -71.190647,
-    width = 0.237555,
-    height = 0.169347,
-    increment = 0.008467;
-for (i = 0; i < (height - increment); i += increment) {
-    for (j = 0; j < (width - increment); j += increment) {
-        var gridboxCoordinates = [];
+    boundWidth = 0.237555,
+    boundHeight = 0.169347,
+    increment = 0.004234;
+//    increment = 0.008467;
+for (i = 0; i < (boundHeight - increment); i += increment) {
+    for (j = 0; j < (boundWidth - increment); j += increment) {
+        var gridboxCoordinates = [],
+            gridbox;
         gridboxCoordinates.push([minLatitude + i, minLongitude + j]);
         gridboxCoordinates.push([minLatitude + increment + i, minLongitude + j]);
         gridboxCoordinates.push([minLatitude + increment + i, minLongitude + increment + j]);
@@ -83,15 +70,13 @@ for (i = 0; i < (height - increment); i += increment) {
     }
 }
 
+//create text arrays for display and query
 var years = ["2012", "2013", "2014", "2015", "2016"],
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     displayMonths = [],
     postMonths = [],
     queryResults,
-    queryTotal,
-    i,
-    j;
-    
+    queryTotal;
 for (i in years) {
     for (j in months) {
         if (!(years[i] === "2012" && (months[j] === "January" || months[j] === "February" || months[j] === "March" || months[j] === "April" || months[j] === "May" || months[j] === "June"))) {
@@ -110,6 +95,43 @@ for (i in years) {
         }
     }
 }
+
+function createHorizontalChart(id, data) {
+    "use strict";
+    console.log("we making chart");
+    var width = 750,
+        barHeight = 20;
+    var x = d3.scaleLinear()
+        .range([0, width])
+        .domain([0, d3.max(data, function (d) { return d.total; })]);
+    var chart = d3.select(id)
+        .attr("width", width)
+        .attr("height", barHeight * data.length)
+        .append("g")
+            .attr("class", "x axis")
+            .call(d3.axisBottom(x));
+    var bar = chart.selectAll("g")
+        .data(data)
+    .enter().append("g")
+        .attr("transform", function (d, i) { return "translate(0," + i * barHeight + ")"; });
+    bar.append("rect")
+        .attr("class", "bar")
+        .attr("width", function (d) { return x(d.total); })
+        .attr("height", barHeight - 1);
+    bar.append("text")
+        .attr("x", function (d) { return x(d.total) - 3; })
+        .attr("y", barHeight / 2)
+        .attr("dy", ".35em")
+        .text(function (d) { return d.name; });
+    
+    function type(d) {
+        d.value = +d.value;
+        return d;
+    }
+    console.log("we done making chart");
+}
+
+//retrieve data for the month being queried
 function query(post) {
     "use strict";
     console.log(post);
@@ -177,21 +199,28 @@ function query(post) {
                 
                 var row = Math.ceil((data[i].latitude - minLatitude) / increment),
                     column = Math.ceil((data[i].longitude - minLongitude) / increment),
-                    gridIndex = (((row - 1) * 28) + column - 1);
+                    gridIndex = (((row - 1) * Math.round(boundWidth / increment)) + column - 1);
                 if (gridIndices[gridIndex] === undefined) {
                     gridIndices[gridIndex] = 1;
                 } else {
                     gridIndices[gridIndex]++;
                 }
             }
-            console.log(gridIndices);
             var tot = 0;
             for (i = 0; i < gridIndices.length; i++) {
-                if (gridIndices[i] !== undefined) {
+                if (gridIndices[i] !== undefined && grid[i] !== undefined) {
 //                    console.log("index:" + i + " sum:" + gridIndices[i] + " opacity:" + (gridIndices[i] / 250));
-                    grid[i].setStyle({fillOpacity: (gridIndices[i] / 250)});
+                    grid[i].setStyle({fillOpacity: (gridIndices[i] / 100)});
                 }
             }
+            console.log(queryResults.category);
+            var incidentFrequency = [],
+                cat;
+            for (cat in queryResults.category) {
+                incidentFrequency.push({name: cat, total: queryResults.category[cat]});
+            }
+            console.log(incidentFrequency);
+            createHorizontalChart("#incident-pie", incidentFrequency);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -203,10 +232,33 @@ function query(post) {
 }
 function showValue(newValue) {
     "use strict";
-    document.getElementById("slider_value").innerHTML = displayMonths[newValue];
+    document.getElementById("slider-value").innerHTML = displayMonths[newValue];
     var postData = {
         month: postMonths[newValue]
     };
     query(postData);
 }
 
+
+
+
+function getColors() {
+    "use strict";
+    var incidents = {};
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000",
+        data: {month: "IncidentFrequency"},
+        crossDomain: true,
+        success: function (data) {
+            data = JSON.parse(data);
+            for (i = 0; i < data.length; i++) {
+                var inc = document.createElement("div");
+                inc.style.cssText = "float:left;width:300px;height:30px;text-align:center;background-color:" + data[i].color + ";";
+                inc.innerHTML = data[i].name + " - " + data[i].total;
+                document.getElementById("colors").appendChild(inc);
+            }
+        }
+    });
+}
+//getColors();
