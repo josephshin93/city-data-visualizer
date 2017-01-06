@@ -26,7 +26,7 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h2>Boston Crime Data Visualization</h2>
+        <h1>Boston Crime Data Visualization</h1>
         <div id="map-bg">
             <div id="map"></div>
         </div>
@@ -34,10 +34,10 @@
             <p id="slider-value">Select Month</p>
             <input id="slider"type="range" min="0" max="53" step="1" onchange="showValue(this.value)"/>
         </div>
-        <div id="charts">
-            <svg id="incident-pie"></svg>
+        <div id="charts" class="full-container">
+            <h3 class="center">Incident Category Histogram</h3>
+            <svg id="histogram-category"></svg>
         </div>
-        <div id="colors"></div>
         
         
 <!--
