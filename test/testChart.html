@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			#chart{
+				border: 1px dotted grey;
+			}
+			#chart .tick line{
+				opacity: 0.2;
+			}
+			#chart path{
+				opacity: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<svg id=chart></svg>
+
+		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+		<script>
+			var data = { incident1: 900, incident2: 800, incident3: 700, incident4: 600, incident5: 500, incident6: 400, incident7: 300, incident8: 200, incident9: 100, incident10: 80, incident11: 60, incident12: 40, incident13: 20};
+			var sampleData = [
+              {name: "Locke",    value:  4},
+              {name: "Reyes",    value:  8},
+              {name: "Ford",     value: 15},
+              {name: "Jarrah",   value: 16},
+              {name: "Shephard", value: 23},
+              {name: "Kwon",     value: 42}
+            ];
+
+            var chart = d3.select("#chart"),
+            	chartWidth = 900,
+            	barHeight = 15,
+            	values = Object.values(data);
+            	maxSampleValue = 42;
+
+            var x = d3.scaleLinear()
+                .domain([0, d3.max(values)])//actual values
+                .range([0, chartWidth-40]);//pixels
+            var xAxis = d3.axisBottom(x)
+            	.tickSize(barHeight * values.length);
+
+            chart.attr("width", chartWidth)
+            	.attr("height", barHeight * (values.length + 2));
+            chart.append("g")
+            	.attr("transform", "translate(" + barHeight + ", " + barHeight + ")")
+            	.call(xAxis);
+            var bar = chart.selectAll("svg") //why does this work? what does selectAll exactly do?
+            	.data(values)
+            	.enter().append("g")
+            		.attr("transform", function(d, i) {return "translate(20, " +  barHeight * (i + 1) + ")";});
+            bar.append("rect")
+            	.attr("width", function(d) { return x(d); })
+            	.attr("height", barHeight - 1)
+            	.attr("fill", "steelBlue");
+            bar.append("text")
+            	.attr("transform", "translate(3, " + (barHeight - (barHeight / 4)) + ")")
+            	.attr("fill", "lightGrey")
+            	.attr("font-size", 10)
+            	.text(function(d, i) {return Object.keys(data)[i];});
+            
+            
+		</script>
+	</body>
+</html>
