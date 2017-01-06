@@ -94,15 +94,22 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-body{
-/*
-    background-color: black;
-    color: white;
-*/
-}
 .bord{
     border: 1px dotted grey;
 }
+.full-container{
+    overflow: auto;
+    width: 100%;
+}
+.full-container *{
+    color: white;
+}
+.center{
+    width: 750px;
+    display: block;
+    margin: auto;
+}
+
 #map-bg{
     width: 100%;
     background-color: black;
@@ -111,10 +118,6 @@ body{
     margin: auto;
     width: 750px;
     height: 700px;
-}
-#wide-container{
-    overflow: auto;
-    width: 100%;
 }
 #query-bar{
     overflow: auto;
@@ -131,29 +134,21 @@ body{
     width: 550px;
 }
 #charts{
-    overflow: auto;
-    width: 100%;
+    background-color: black;
 }
-#incident-pie{
-/*    margin: auto;*/
+#histogram-category{
+    display: block;
+    margin: auto;
+    background-color: white;
 }
 
 
 /*d3 styles*/
-.bar {
-    fill: steelblue;
+#histogram-category .tick line{
+    opacity: 0.2;
 }
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-.x.axis path {
-    display: block;
-}
-.y.axis path {
-    display: none;
+#histogram-category path{
+    opacity: 0;
 }
 
 
