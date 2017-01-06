@@ -3,31 +3,35 @@
 	<head>
 		<style>
 			#chart{
-                border: 1px dotted grey;
-            }
-            .axis{
+          border: 1px dotted grey;
+      }
+      .axis{
 
-            }
-            .x{
+      }
+      .x{
 
-            }
-            .y{
+      }
+      .y{
 
-            }
+      }
 
-            .chart rect {
-              fill: steelblue;
-            }
+      #t{
+        border: 1px dotted grey;
+      }
 
-            .chart text {
-              fill: white;
-              font: 10px sans-serif;
-              text-anchor: end;
-            }
-            .chart{
-                border: 1px dotted grey;
-                display: block;
-            }
+      .chart rect {
+        fill: steelblue;
+      }
+
+      .chart text {
+        fill: white;
+        font: 10px sans-serif;
+        text-anchor: end;
+      }
+      .chart{
+          border: 1px dotted grey;
+          display: block;
+      }
 		</style>
 		
 	</head>
@@ -62,10 +66,12 @@
           </g>
         </svg>
 
+        <svg id="t"></svg>
+
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
 		<script>
-			var data = [
+			     var data = [
               {name: "Locke",    value:  4},
               {name: "Reyes",    value:  8},
               {name: "Ford",     value: 15},
@@ -102,16 +108,40 @@
                 .call(yAxis);
 
             var bar = chart.selectAll("g")
-                  .data(data)
+                .data(data)
                 .enter().append("g")
-                  .attr("transform", function(d , i) { return "translate(0, " + i * barHeight + ")"; });
+                  .attr("transform", function(d, i) { return "translate(0, " + barHeight + ")"; });
 
+            console.log(data[0].value);
+                  
             bar.append("rect")
                 .attr("width", function(d) { return  x(d.value); })
-                .attr("height", barHeight - 1);
+                .attr("height", barHeight - 1)
+                .attr("fill", "blue");
+
+            var div = d3.select("#t")
+              .attr("width", 600)
+              .attr("height", 140)
+            var divb = div.selectAll("g")
+              .data(data)
+              .enter().append("g")
+                .attr("transform", function(d, i) { return "translate(0, " + (barHeight * (i)) + ")"; });
 
 
-
+        
+            divb.append("rect")
+              .attr("transform", "translate(100, 0)")
+              .attr("width", function(d) { return d.value * 10; })
+              .attr("height", 19)
+              .attr("fill", "blue");
+            divb.append("text")
+              .attr("width", 90)
+              .attr("transform", "translate(90, 15)")
+              .attr("fill", "black")
+              .attr("text-anchor", "end")
+              .text(function(d) { return d.name; });
+              
+            
             
 
 
