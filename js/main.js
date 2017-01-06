@@ -98,37 +98,35 @@ for (i in years) {
 
 function createHorizontalChart(id, data) {
     "use strict";
-    console.log("we making chart");
-    var width = 750,
-        barHeight = 20;
+    var chart = d3.select(id),
+        chartWidth = 750,
+        barHeight = 15,
+        values = Object.values(data);
     var x = d3.scaleLinear()
-        .range([0, width])
-        .domain([0, d3.max(data, function (d) { return d.total; })]);
-    var chart = d3.select(id)
-        .attr("width", width)
-        .attr("height", barHeight * data.length)
-        .append("g")
-            .attr("class", "x axis")
-            .call(d3.axisBottom(x));
-    var bar = chart.selectAll("g")
-        .data(data)
-    .enter().append("g")
-        .attr("transform", function (d, i) { return "translate(0," + i * barHeight + ")"; });
+        .domain([0, d3.max(values)])
+        .range([0, chartWidth - (barHeight * 2)]);
+    var xAxis = d3.axisBottom(x)
+        .tickSize(barHeight * values.length + 5);
+
+    chart.attr("width", chartWidth)
+        .attr("height", barHeight * (values.length + 2) + 5);
+    chart.append("g")
+        .attr("transform", "translate(" + barHeight + ", " + barHeight + ")")
+        .call(xAxis);
+    var bar = chart.selectAll("svg")
+        .data(values)
+        .enter().append("g")
+            .attr("transform", function(d, i) {return "translate(20, " +  barHeight * (i + 1) + ")";});
     bar.append("rect")
-        .attr("class", "bar")
-        .attr("width", function (d) { return x(d.total); })
-        .attr("height", barHeight - 1);
+        .attr("width", function(d) { return x(d); })
+        .attr("height", barHeight - 1)
+        .attr("fill", "#d85d5d");
     bar.append("text")
-        .attr("x", function (d) { return x(d.total) - 3; })
-        .attr("y", barHeight / 2)
-        .attr("dy", ".35em")
-        .text(function (d) { return d.name; });
-    
-    function type(d) {
-        d.value = +d.value;
-        return d;
-    }
-    console.log("we done making chart");
+        .attr("transform", "translate(3, " + (barHeight - (barHeight / 4)) + ")")
+        // .attr("fill", "lightGrey")
+        .attr("font-family", "Verdana")
+        .attr("font-size", 10)
+        .text(function(d, i) {return Object.keys(data)[i];});
 }
 
 //retrieve data for the month being queried
@@ -220,7 +218,7 @@ function query(post) {
                 incidentFrequency.push({name: cat, total: queryResults.category[cat]});
             }
             console.log(incidentFrequency);
-            createHorizontalChart("#incident-pie", incidentFrequency);
+            createHorizontalChart("#histogram-category", queryResults.category);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
