@@ -96,6 +96,17 @@ for (i in years) {
     }
 }
 
+//sticky query bar
+var queryBarElement = document.getElementById("wrapper-query");
+window.addEventListener('scroll', function () {
+    if (window.pageYOffset >= 44) {
+        queryBarElement.classList.add("fixed");
+    } else {
+        queryBarElement.classList.remove("fixed");
+    }
+});
+
+
 function createHorizontalChart(id, data) {
     "use strict";
     var chart = d3.select(id),
@@ -108,6 +119,7 @@ function createHorizontalChart(id, data) {
     var xAxis = d3.axisBottom(x)
         .tickSize(barHeight * values.length + 5);
 
+    chart.classed("hidden", false);
     chart.attr("width", chartWidth)
         .attr("height", barHeight * (values.length + 2) + 5);
     chart.append("g")
@@ -116,23 +128,35 @@ function createHorizontalChart(id, data) {
     var bar = chart.selectAll("svg")
         .data(values)
         .enter().append("g")
-            .attr("transform", function(d, i) {return "translate(20, " +  barHeight * (i + 1) + ")";});
+            .attr("transform", function(d, i) {return "translate(" + barHeight + ", " +  barHeight * (i + 1) + ")";});
     bar.append("rect")
         .attr("width", function(d) { return x(d); })
         .attr("height", barHeight - 1)
         .attr("fill", "#d85d5d");
     bar.append("text")
-        .attr("transform", "translate(3, " + (barHeight - (barHeight / 4)) + ")")
+        .attr("transform", "translate(2, " + (barHeight - (barHeight / 4)) + ")")
         // .attr("fill", "lightGrey")
         .attr("font-family", "Verdana")
         .attr("font-size", 10)
         .text(function(d, i) {return Object.keys(data)[i];});
+}
+function createWordCloud(id, data){
+    //max street count for one month is 455 (August 2012)
+    var wordcloud = d3.select(id);
+    wordcloud.classed("hidden", false);
+    wordcloud.selectAll("g")
+        .data(Object.keys(data))
+        .enter().append("p")
+            .text(function(d) {return d;})
+            .attr("style", function(d) {return "font-size:" + (data[d] / 10 + 6) + "px"});
 }
 
 //retrieve data for the month being queried
 function query(post) {
     "use strict";
     console.log(post);
+    document.getElementById("histogram-category").innerHTML = ""; //clear previous histogram
+    document.getElementById("wordcloud-streets").innerHTML = ""; //clear previous wordcloud
     var queryResults = {
             'category': {},
             'districts': {},
@@ -211,14 +235,8 @@ function query(post) {
                     grid[i].setStyle({fillOpacity: (gridIndices[i] / 100)});
                 }
             }
-            console.log(queryResults.category);
-            var incidentFrequency = [],
-                cat;
-            for (cat in queryResults.category) {
-                incidentFrequency.push({name: cat, total: queryResults.category[cat]});
-            }
-            console.log(incidentFrequency);
             createHorizontalChart("#histogram-category", queryResults.category);
+            createWordCloud("#wordcloud-streets", queryResults.streets);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -228,15 +246,17 @@ function query(post) {
     });
     console.log(queryResults);
 }
-function showValue(newValue) {
+function queryDatabase(newValue) {
     "use strict";
-    document.getElementById("slider-value").innerHTML = displayMonths[newValue];
     var postData = {
         month: postMonths[newValue]
     };
     query(postData);
 }
-
+function showValue(newValue) {
+    "use strict";
+    document.getElementById("slider-value").innerHTML = displayMonths[newValue];
+}
 
 
 
