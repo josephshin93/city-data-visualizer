@@ -94,22 +94,32 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-.bord{
+.border{
     border: 1px dotted grey;
 }
-.full-container{
+.wide-container{
     overflow: auto;
     width: 100%;
 }
-.full-container *{
+.wide-container h3{
     color: white;
 }
 .center{
     width: 750px;
     display: block;
     margin: auto;
+    overflow: auto;
 }
-
+.spacer{
+    margin-bottom: 50px;
+}
+.fixed{
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
 #map-bg{
     width: 100%;
     background-color: black;
@@ -118,16 +128,16 @@ textarea {
     margin: auto;
     width: 750px;
     height: 700px;
+    z-index: 1;
 }
-#query-bar{
-    overflow: auto;
-    margin: auto;
-    width: 750px;
+#wrapper-query{
+    background-color: white;
 }
 #slider-value{
     display: inline-block;
     width: 150px;
     margin-right: 20px;
+    margin-left: 10px;
 }
 #slider{
     display: inline-block;
@@ -137,13 +147,8 @@ textarea {
     background-color: black;
 }
 #histogram-category{
-    display: block;
-    margin: auto;
     background-color: white;
 }
-
-
-/*d3 styles*/
 #histogram-category .tick line{
     opacity: 0.2;
 }
@@ -151,36 +156,13 @@ textarea {
     opacity: 0;
 }
 
-
-/*
-#ti{
+#wordcloud-streets{
+}
+#wordcloud-streets p{
+    color: white;
     float: left;
-    margin-right: 10%;
+    margin: 0;
 }
-
-#qbar{
-    float: left;
-    margin-top: 19.92px;
-}
-
-
-#pies{
-    float: left;
-    width: 28%;
-    height: 700px;
-}
-.pie{
-    width: 100%;
-    height: 25%;
-}
-
-
-#timeline{
-    width: 99%;
-    height: 99px;
-
-*/
-
 
 
 /* ==========================================================================

@@ -26,42 +26,30 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+ <!--        <div class=wide-container id="wrapper-query">
+            <div class="center" id="query-bar">
+                <p id="slider-value">Select Month</p>
+                <input id="slider"type="range" min="0" max="53" step="1" onchange="queryDatabase(this.value)" onmousemove="showValue(this.value)" />
+            </div>
+        </div> -->
         <h1>Boston Crime Data Visualization</h1>
-        <div id="map-bg">
+        <div class="wide-container" id="wrapper-query">
+            <div class="center" id="query_bar">
+                <p id="slider-value">Select Month</p>
+                <input id="slider" type="range" min="0" max="53" step="1" onchange="queryDatabase(this.value)" onmousemove="showValue(this.value)" />
+            </div>
+        </div>
+        <div class="spacer" id="map-bg">
             <div id="map"></div>
         </div>
-        <div id="query-bar">
-            <p id="slider-value">Select Month</p>
-            <input id="slider"type="range" min="0" max="53" step="1" onchange="showValue(this.value)"/>
+        <div></div>
+        <div id="charts" class="wide-container">
+            <h3 class="center">INCIDENT CATEGORY HISTOGRAM</h3>
+            <svg class="hidden center spacer" id="histogram-category"></svg>
+            <h3 class="center">STREETS</h3>
+            <div class="hidden center spacer" id="wordcloud-streets"></div>
         </div>
-        <div id="charts" class="full-container">
-            <h3 class="center">Incident Category Histogram</h3>
-            <svg id="histogram-category"></svg>
-        </div>
-        
-        
-<!--
-        <div class="wide-container underConstr">
-            <h2 class="underConstr">Boston Crime Data Visualization</h2>
-            <div class="underConstr">
-                <p class="underConstr">Select Month</p>
-                <input class="underConstr" type="range" min="0" max="53" step="1" onchange="showValue(this.value)" />
-                <p id="slider_value" class="underConstr">Select Month</p>
-            </div>
-        </div>
-        <div class="wide-container underConstr">
-            <div id="mapid" class="underConstr"></div>
-            <div id="pies" class="underConstr">
-                <div class="pie underConstr"></div>
-                <div class="pie underConstr"></div>
-                <div class="pie underConstr"></div>
-                <div class="pie underConstr"></div>
-            </div>
-        </div>
-        <div class="wide-container underConstr">
-            <div id="timeline" class="underConstr"></div>
-        </div>
--->
+
         
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
         <script src="leaflet/leaflet.js"></script>
