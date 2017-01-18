@@ -24,14 +24,6 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
-        <!-- Add your site or application content here -->
- <!--        <div class=wide-container id="wrapper-query">
-            <div class="center" id="query-bar">
-                <p id="slider-value">Select Month</p>
-                <input id="slider"type="range" min="0" max="53" step="1" onchange="queryDatabase(this.value)" onmousemove="showValue(this.value)" />
-            </div>
-        </div> -->
         <h1>Boston Crime Data Visualization</h1>
         <div class="wide-container" id="wrapper-query">
             <div class="center" id="query_bar">
@@ -39,15 +31,26 @@
                 <input id="slider" type="range" min="0" max="53" step="1" onchange="queryDatabase(this.value)" onmousemove="showValue(this.value)" />
             </div>
         </div>
-        <div class="spacer" id="map-bg">
+        <div id="map-bg">
             <div id="map"></div>
         </div>
-        <div></div>
         <div id="charts" class="wide-container">
             <h3 class="center">INCIDENT CATEGORY HISTOGRAM</h3>
             <svg class="hidden center spacer" id="histogram-category"></svg>
             <h3 class="center">STREETS</h3>
             <div class="hidden center spacer" id="wordcloud-streets"></div>
+            <h3 class="center">DISTRICTS</h3>
+            <svg class="hidden center spacer" id="bubblechart-districts"></svg>
+            <h3 class="center">DAY OF MONTH</h3>
+            <p class="center">chloropleth calender!</p>
+            <h3 class="center">DAY OF WEEK</h3>
+            <p class="center">pie chart!</p>
+            <h3 class="center">HOUR OF DAY</h3>
+            <p class="center">line graph!</p>
+            <h3 class="center">SHOOTING</h3>
+            <p class="center">guage chart with gun icon in the middle!</p>
+            <h3 class="center">UCR</h3>
+            <p class="center">aster chart!</p>
         </div>
 
         
