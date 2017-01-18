@@ -101,9 +101,6 @@ textarea {
     overflow: auto;
     width: 100%;
 }
-.wide-container h3{
-    color: white;
-}
 .center{
     width: 750px;
     display: block;
@@ -123,6 +120,7 @@ textarea {
 #map-bg{
     width: 100%;
     background-color: black;
+    padding-bottom: 50px; /*instead of margin-bottom from spacer class*/
 }
 #map{
     margin: auto;
@@ -146,6 +144,9 @@ textarea {
 #charts{
     background-color: black;
 }
+#charts h3, #charts p{
+    color: white;
+}
 #histogram-category{
     background-color: white;
 }
@@ -155,13 +156,26 @@ textarea {
 #histogram-category path{
     opacity: 0;
 }
-
+.bar:hover > rect{
+    fill: red;
+}
 #wordcloud-streets{
 }
 #wordcloud-streets p{
     color: white;
     float: left;
     margin: 0;
+}
+#wordcloud-streets p:hover{
+    color: red;
+}
+#bubblechart-districts text{
+    font: 16px sans-serif;
+    text-anchor: middle;
+    fill: black;
+}
+#bubblechart-districts g:hover > text{
+    fill: white;
 }
 
 
