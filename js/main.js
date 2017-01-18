@@ -128,6 +128,7 @@ function createHorizontalChart(id, data) {
     var bar = chart.selectAll("svg")
         .data(values)
         .enter().append("g")
+            .attr("class", "bar")
             .attr("transform", function(d, i) {return "translate(" + barHeight + ", " +  barHeight * (i + 1) + ")";});
     bar.append("rect")
         .attr("width", function(d) { return x(d); })
@@ -141,7 +142,12 @@ function createHorizontalChart(id, data) {
         .text(function(d, i) {return Object.keys(data)[i];});
 }
 function createWordCloud(id, data){
-    //max street count for one month is 455 (August 2012)
+    //remove all streets that have less then 4 incidents on them
+    for (var key in data) {
+        if (data[key] < 4) {
+            delete data[key];
+        }
+    }
     var wordcloud = d3.select(id);
     wordcloud.classed("hidden", false);
     wordcloud.selectAll("g")
@@ -149,6 +155,44 @@ function createWordCloud(id, data){
         .enter().append("p")
             .text(function(d) {return d;})
             .attr("style", function(d) {return "font-size:" + (data[d] / 10 + 6) + "px"});
+}
+function createBubbleChart(id, data) {
+    var districtData = [],
+        key;
+    for (key in data) {
+        var district = {
+            "name": key,
+            "frequency": data[key]
+        };
+        districtData.push(district);
+    }
+    var tree = d3.hierarchy({children: districtData})
+        .sum(function(d) {return d.frequency;});
+
+    var width = 750;
+
+    var bubbleChart = d3.select("#bubblechart-districts")
+        .attr("width", width)
+        .attr("height", width)
+        .classed("hidden", false);
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+    var pack = d3.pack()
+        .size([width, width]);
+
+    var node = bubbleChart.selectAll(".node")
+        .data(pack(tree).leaves())
+        .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) {return "translate(" + d.x + ", " + d.y + ")";});
+    node.append("circle")
+        .attr("r", function(d) {return d.r;})
+        .style("fill", function(d) {return color(d.data.name);});
+    node.append("text")
+        .text(function(d) {return d.data.name;});
+    node.append("title")
+        .text(function(d) {return "District: " + d.data.name + "\n" + "Incidents: " + d.value;});
 }
 
 //retrieve data for the month being queried
@@ -164,6 +208,8 @@ function query(post) {
                 'No': 0,
                 'Yes': 0
             },
+            'dayMonth': {},
+            'time': {},
             'hours': {},
             'dayWeek': {
                 'Sunday': 0,
@@ -210,11 +256,21 @@ function query(post) {
                 } else {
                     queryResults.streets[data[i].street]++;
                 }
+                if (queryResults.time[data[i].hour + ":" + data[i].minute] === undefined) {
+                    queryResults.time[data[i].hour + ":" + data[i].minute] = 1;
+                } else {
+                    queryResults.time[data[i].hour + ":" + data[i].minute]++;
+                }
                 if (queryResults.hours[data[i].hour] === undefined) {
                     queryResults.hours[data[i].hour] = 1;
                 } else {
                     queryResults.hours[data[i].hour]++;
                 }
+                if (queryResults.dayMonth[data[i].day] === undefined) {
+                    queryResults.dayMonth[data[i].day] = 1;
+                } else {
+                    queryResults.dayMonth[data[i].day]++;
+                }   
                 queryResults.shooting[data[i].shooting]++;
                 queryResults.dayWeek[data[i].day_of_week]++;
                 queryResults.ucr[data[i].ucr]++;
@@ -237,6 +293,7 @@ function query(post) {
             }
             createHorizontalChart("#histogram-category", queryResults.category);
             createWordCloud("#wordcloud-streets", queryResults.streets);
+            createBubbleChart("#bubblechart-districts", queryResults.districts);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
