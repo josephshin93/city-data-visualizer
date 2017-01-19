@@ -172,10 +172,28 @@ textarea {
 #bubblechart-districts text{
     font: 16px sans-serif;
     text-anchor: middle;
-    fill: black;
+    fill: white;
 }
 #bubblechart-districts g:hover > text{
+    fill: black;
+}
+.monthlabel rect{
+    fill: red;
+}
+.monthlabel text{
+    text-anchor: middle;
     fill: white;
+    font-size: 24px;
+    font-family: Verdana;
+}
+.days rect{
+    fill: red;
+    stroke-width: 1;
+    stroke: white;
+}
+.days text{
+    fill: white;
+    text-anchor: middle;
 }
 
 
