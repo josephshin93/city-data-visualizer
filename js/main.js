@@ -74,9 +74,7 @@ for (i = 0; i < (boundHeight - increment); i += increment) {
 var years = ["2012", "2013", "2014", "2015", "2016"],
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     displayMonths = [],
-    postMonths = [],
-    queryResults,
-    queryTotal;
+    postMonths = [];
 for (i in years) {
     for (j in months) {
         if (!(years[i] === "2012" && (months[j] === "January" || months[j] === "February" || months[j] === "March" || months[j] === "April" || months[j] === "May" || months[j] === "June"))) {
@@ -194,13 +192,85 @@ function createBubbleChart(id, data) {
     node.append("title")
         .text(function(d) {return "District: " + d.data.name + "\n" + "Incidents: " + d.value;});
 }
+function createChloroplethChart(id, data, month, firstDay){
+    var daysWeek = {"Sunday": 0, "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6};
+    var values = Object.values(data);
+    var coordinates = []
+        row = 0,
+        col = 0;
+    for (i = 0; i < values.length; i++) {
+        if (i === 0) { col = daysWeek[firstDay]; }
+        if (col > 6) { col = 0; row++; }
+        coordinates.push([row, col]);
+        col++;
+    }
 
+    var width = 750,
+        gridboxWidth = width / 7,
+        monthLabelHeight = 100,
+        weeksLabelHeight = 30;
+
+    var grid = d3.select(id)
+        .attr("width", width)
+        .attr("height", (gridboxWidth * (coordinates[coordinates.length - 1][0] + 1)) + monthLabelHeight + weeksLabelHeight)
+        .classed("hidden", false);
+
+    var monthLabel = grid.append("g")
+        .attr("class", "monthlabel");
+    monthLabel.append("rect")
+        .attr("width", width)
+        .attr("height", monthLabelHeight);
+    monthLabel.append("text")
+        .attr("x", "50%")
+        .attr("y", "10%")
+        .text(month);
+
+    var weeksLabel = grid.append("g")
+    var weekday = weeksLabel.selectAll("g")
+        .data(Object.keys(daysWeek))
+        .enter().append("g")
+            .attr("width", width)
+            .attr("transform", function(d, i) {return "translate(" + i * gridboxWidth + ", 100)";});    
+    weekday.append("rect")
+        .attr("width", gridboxWidth)
+        .attr("height", weeksLabelHeight)
+        .attr("fill", "grey")
+    weekday.append("text")
+        .attr("transform", "translate(55, 20)")
+        .attr("fill", "white")
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .text(function(d) {return d;});
+    
+    var background = grid.append("rect")
+        .attr("transform", "translate(0, 130)")
+        .attr("width", width)
+        .attr("height", (gridboxWidth * (coordinates[coordinates.length - 1][0] + 1)))
+        .attr("fill", "white");
+
+    var days = grid.selectAll(".days")
+        .data(coordinates)
+        .enter().append("g")
+            .attr("class", "days")
+            .attr("transform", function(d){return "translate(" + (gridboxWidth * d[1]) + ", " + (gridboxWidth * d[0] + 130) + ")";});
+    days.append("rect")
+        .attr("width", gridboxWidth - 1)
+        .attr("height", gridboxWidth - 1)
+        .attr("fill-opacity", function(d, i) {return values[i] / 375;})
+        .attr("class", "days");
+    days.append("text")
+        .attr("x", 50)
+        .attr("y", 60)
+        .text(function(d, i) {return (i + 1);});
+}
 //retrieve data for the month being queried
-function query(post) {
+function query(post, monthNumber) {
     "use strict";
     console.log(post);
     document.getElementById("histogram-category").innerHTML = ""; //clear previous histogram
     document.getElementById("wordcloud-streets").innerHTML = ""; //clear previous wordcloud
+    document.getElementById("bubblechart-districts").innerHTML = ""; //clear previous bubble chart
+    document.getElementById("chlorogrid-daymonth").innerHTML = ""; //clear previous chloropleth grid
     var queryResults = {
             'category': {},
             'districts': {},
@@ -208,6 +278,7 @@ function query(post) {
                 'No': 0,
                 'Yes': 0
             },
+            'firstDay': "",
             'dayMonth': {},
             'time': {},
             'hours': {},
@@ -274,6 +345,9 @@ function query(post) {
                 queryResults.shooting[data[i].shooting]++;
                 queryResults.dayWeek[data[i].day_of_week]++;
                 queryResults.ucr[data[i].ucr]++;
+                if (queryResults.firstDay === "" && +data[i].day === 1) {
+                    queryResults.firstDay = data[i].day_of_week;
+                }
                 
                 var row = Math.ceil((data[i].latitude - minLatitude) / increment),
                     column = Math.ceil((data[i].longitude - minLongitude) / increment),
@@ -294,6 +368,7 @@ function query(post) {
             createHorizontalChart("#histogram-category", queryResults.category);
             createWordCloud("#wordcloud-streets", queryResults.streets);
             createBubbleChart("#bubblechart-districts", queryResults.districts);
+            createChloroplethChart("#chlorogrid-daymonth", queryResults.dayMonth, displayMonths[monthNumber], queryResults.firstDay);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -308,7 +383,7 @@ function queryDatabase(newValue) {
     var postData = {
         month: postMonths[newValue]
     };
-    query(postData);
+    query(postData, newValue);
 }
 function showValue(newValue) {
     "use strict";
