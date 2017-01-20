@@ -195,6 +195,22 @@ textarea {
     fill: white;
     text-anchor: middle;
 }
+.days:hover > text{
+    fill: black;
+}   
+.arc text {
+    font-size: 14px;
+    font-family: Verdana;
+    text-anchor: middle;
+    fill: white;
+}
+.arc path {
+    stroke: #fff;
+    stroke-width: 4;
+}
+.arc:hover > text{
+    fill: black;
+}
 
 
 /* ==========================================================================
