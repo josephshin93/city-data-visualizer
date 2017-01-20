@@ -190,7 +190,7 @@ function createBubbleChart(id, data) {
     node.append("text")
         .text(function(d) {return d.data.name;});
     node.append("title")
-        .text(function(d) {return "District: " + d.data.name + "\n" + "Incidents: " + d.value;});
+        .text(function(d) {return d.value + " incidents occured in district " + d.data.name;});
 }
 function createChloroplethChart(id, data, month, firstDay){
     var daysWeek = {"Sunday": 0, "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6};
@@ -262,6 +262,61 @@ function createChloroplethChart(id, data, month, firstDay){
         .attr("x", 50)
         .attr("y", 60)
         .text(function(d, i) {return (i + 1);});
+    days.append("title")
+        .text(function(d, i) {
+            if (i === 0) {
+                return values[i] + " incidents occured on the " + (i + 1) + "st";
+            }else if (i === 1) {
+                return values[i] + " incidents occured on the " + (i + 1) + "nd";
+            }else if (i === 2) {
+                return values[i] + " incidents occured on the " + (i + 1) + "rd";
+            }else {
+                return values[i] + " incidents occured on the " + (i + 1) + "th";
+            }
+        });
+}
+function createPieChart(id, data){
+    var width = 750,
+        pieRadius = 300;
+    
+    var color = d3.scaleOrdinal()
+        .domain(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+        .range(["#7766ea", "#86cb81", "#547afe", "#a5b610", "#ca8f80", "#d169de", "#c8b4d7"]);
+
+    var keys = Object.keys(data),
+        values = Object.values(data);
+
+    var arc = d3.arc()
+        .outerRadius(pieRadius)
+        .innerRadius(0);
+    var labelArc = d3.arc()
+        .outerRadius(pieRadius)
+        .innerRadius(pieRadius / 2);
+
+    var pie = d3.pie();
+
+    var pieChart = d3.select(id)
+        .attr("width", width)
+        .attr("height", pieRadius * 2 + 4)
+        .classed("hidden", false)
+    .append("g")
+        .attr("transform", "translate(" + width / 2 + ", " + (pieRadius + 2) + ")");
+
+    var slice = pieChart.selectAll(".arc")
+        .data(pie(values))
+        .enter().append("g")
+            .attr("class", "arc")
+    slice.append("path")
+        .attr("d", function(d) {return arc(d);})
+        .style("fill", function(d, i) {return color(keys[i]);});
+    slice.append("text")
+        .attr("transform", function(d) {return "translate(" + labelArc.centroid(d) + ")";})
+        .attr("dy", ".35em")
+        .text(function(d, i) {return keys[i]});
+    slice.append("title")
+        .text(function(d, i) {return values[i] + " incidents on all " + keys[i] + "s";} )
+
+
 }
 //retrieve data for the month being queried
 function query(post, monthNumber) {
@@ -369,6 +424,7 @@ function query(post, monthNumber) {
             createWordCloud("#wordcloud-streets", queryResults.streets);
             createBubbleChart("#bubblechart-districts", queryResults.districts);
             createChloroplethChart("#chlorogrid-daymonth", queryResults.dayMonth, displayMonths[monthNumber], queryResults.firstDay);
+            createPieChart("#pie-dayweek", queryResults.dayWeek);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {
