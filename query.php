@@ -1,4 +1,9 @@
 <?php
+/*
+    This script is run on localhost:8000 and query requests are sent here from the main.js
+    to fetch the data from the pre-loaded database.
+*/
+
     header('Access-Control-Allow-Origin: *'); //prevent server from blocking requests
 
     //open up database

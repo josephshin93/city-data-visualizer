@@ -12,7 +12,7 @@ function markPjfanLocation() {
     "use strict";
     var pjfanLocationCoordinates = [42.3629, -71.0890],
         pjfanMarkerIcon = L.icon({
-            iconUrl: 'icons/pjfan_marker_icon.png',
+            iconUrl: 'img/icons/pjfan_marker_icon.png',
             iconSize: [80, 107],
             iconAnchor: [40, 106]
         }),
@@ -275,7 +275,7 @@ function createChloroplethChart(id, data, month, firstDay){
             }
         });
 }
-function createPieChart(id, data){
+function createPieChart(id, data, month){
     var width = 750,
         pieRadius = 300;
     
@@ -314,10 +314,12 @@ function createPieChart(id, data){
         .attr("dy", ".35em")
         .text(function(d, i) {return keys[i]});
     slice.append("title")
-        .text(function(d, i) {return values[i] + " incidents on all " + keys[i] + "s";} )
-
+        .text(function(d, i) {return values[i] + " incidents on " + keys[i] + "s of " + month;} )
+}
+function createLineChart(id, data){
 
 }
+
 //retrieve data for the month being queried
 function query(post, monthNumber) {
     "use strict";
@@ -424,7 +426,7 @@ function query(post, monthNumber) {
             createWordCloud("#wordcloud-streets", queryResults.streets);
             createBubbleChart("#bubblechart-districts", queryResults.districts);
             createChloroplethChart("#chlorogrid-daymonth", queryResults.dayMonth, displayMonths[monthNumber], queryResults.firstDay);
-            createPieChart("#pie-dayweek", queryResults.dayWeek);
+            createPieChart("#pie-dayweek", queryResults.dayWeek, displayMonths[monthNumber]);
             console.log("All entries processed");
         },
         error: function (xhr, ajaxOptions, thrownError) {

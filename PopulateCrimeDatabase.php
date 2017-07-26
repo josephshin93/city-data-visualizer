@@ -31,7 +31,7 @@
         "11" => "November",
         "12" => "December"
     );
-    $standardsjson = file_get_contents("incident_standard.json");
+    $standardsjson = file_get_contents("statistics/incident_standard.json");
     $standards = json_decode($standardsjson, true);
 
     //create month table
@@ -173,7 +173,7 @@
                 //handle data for 2015 June - new and old fields are both used here
                 echo "Overlap > ".$y.$m."\n";
                 createTable($db, $y, $m);
-                $datajson = file_get_contents("june_overlap.json");
+                $datajson = file_get_contents("statistics/compare/june_overlap.json");
                 $data = json_decode($datajson, true);
                 $c = $nl = 0;
                 foreach($data as $entry){
