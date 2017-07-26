@@ -5,7 +5,9 @@
 
 # Other
 ##################
+Boston_Crime_Database.db
 archive/*
+node_modules/*
 research/*
 random/*
 test/*
